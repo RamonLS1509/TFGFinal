@@ -1,0 +1,12 @@
+# Backend
+Backend/vendor/
+Backend/.env
+Backend/storage/logs/*
+Backend/storage/framework/cache/*
+Backend/storage/framework/sessions/*
+Backend/bootstrap/cache/*
+
+# Frontend
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.env.local
