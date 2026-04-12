@@ -5,7 +5,7 @@ import api from '@/services/api'
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const loading = ref(false)
-  const initialized = ref(false)  // ← clave: saber si ya intentamos cargar el usuario
+  const initialized = ref(false)
 
   const isAuthenticated = computed(() => !!user.value)
   const isAdmin = computed(() => user.value?.role === 'admin')
@@ -29,12 +29,20 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    await api.post('/api/logout')
-    user.value = null
+    try {
+      await fetchCsrfCookie()
+      await api.post('/api/logout')
+    } catch (e) {
+      // Si falla la petición igual limpiamos el estado local
+      console.warn('Logout request failed:', e)
+    } finally {
+      user.value = null
+      initialized.value = false  // ← permite re-chequear sesión tras login futuro
+    }
   }
 
   async function fetchUser() {
-    if (initialized.value) return   // ← si ya lo intentamos, no repetir
+    if (initialized.value) return
     loading.value = true
     try {
       const { data } = await api.get('/api/me')
@@ -43,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null
     } finally {
       loading.value = false
-      initialized.value = true      // ← marcar como intentado pase lo que pase
+      initialized.value = true
     }
   }
 

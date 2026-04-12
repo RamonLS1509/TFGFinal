@@ -5,7 +5,7 @@
         <span class="text-xl">🎮</span>
         <span class="font-medium text-gray-400">SteamClone</span>
       </div>
-      <p>© 2025 SteamClone · Trabajo Fin de Máster · Full Stack Developer</p>
+      <p>© 2026 SteamClone · Trabajo Fin de Máster · Full Stack Developer</p>
       <div class="flex gap-4">
         <RouterLink to="/catalog" class="hover:text-gray-300 transition-colors">Catálogo</RouterLink>
         <RouterLink to="/login" class="hover:text-gray-300 transition-colors">Login</RouterLink>

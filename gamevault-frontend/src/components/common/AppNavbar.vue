@@ -128,7 +128,10 @@ const menuOpen = ref(false)
 
 async function handleLogout() {
   menuOpen.value = false
-  await auth.logout()
-  router.push({ name: 'home' })
+  try {
+    await auth.logout()
+  } finally {
+    router.push({ name: 'home' })
+  }
 }
 </script>
