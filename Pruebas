@@ -1,0 +1,15 @@
+# Terminal 1 — Backend
+cd steam-backend
+php artisan serve
+
+# Terminal 2 — Frontend
+cd steam-frontend
+npm run dev
+
+# Terminal 3 — Tests backend
+cd steam-backend
+php artisan test --testdox
+
+# Terminal 4 — Tests frontend
+cd steam-frontend
+npm run test:unit

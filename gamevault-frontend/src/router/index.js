@@ -4,7 +4,6 @@ import { useAuthStore } from '@/stores/auth'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    // ── Públicas ──────────────────────────────────────────────────
     {
       path: '/',
       name: 'home',
@@ -20,8 +19,6 @@ const router = createRouter({
       name: 'game-detail',
       component: () => import('@/views/public/GameDetailView.vue'),
     },
-
-    // ── Auth ───────────────────────────────────────────────────────
     {
       path: '/login',
       name: 'login',
@@ -34,8 +31,6 @@ const router = createRouter({
       component: () => import('@/views/auth/RegisterView.vue'),
       meta: { guestOnly: true },
     },
-
-    // ── Privadas (usuario autenticado) ─────────────────────────────
     {
       path: '/library',
       name: 'library',
@@ -54,8 +49,6 @@ const router = createRouter({
       component: () => import('@/views/private/ProfileView.vue'),
       meta: { requiresAuth: true },
     },
-
-    // ── Admin ──────────────────────────────────────────────────────
     {
       path: '/admin/games',
       name: 'admin-games',
@@ -77,12 +70,11 @@ const router = createRouter({
   ],
 })
 
-// Guard de navegación
 router.beforeEach(async (to) => {
   const auth = useAuthStore()
 
-  // Si no sabemos aún si el usuario está autenticado, lo comprobamos
-  if (auth.user === null && !auth.loading) {
+  // Solo llamamos a fetchUser si aún no hemos inicializado
+  if (!auth.initialized) {
     await auth.fetchUser()
   }
 
