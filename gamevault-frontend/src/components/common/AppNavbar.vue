@@ -15,6 +15,11 @@
           active-class="text-white font-medium">
           Catálogo
         </RouterLink>
+        <RouterLink to="/api-explorer"
+          class="text-gray-300 hover:text-white transition-colors"
+          active-class="text-white font-medium">
+          API
+        </RouterLink>
         <template v-if="auth.isAuthenticated">
           <RouterLink to="/library"
             class="text-gray-300 hover:text-white transition-colors"
@@ -79,7 +84,10 @@
         class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
         Catálogo
       </RouterLink>
-
+      <RouterLink to="/api-explorer" @click="menuOpen = false"
+        class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
+        API Explorer
+      </RouterLink>
       <template v-if="auth.isAuthenticated">
         <RouterLink to="/library" @click="menuOpen = false"
           class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">

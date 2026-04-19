@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('@/views/public/CatalogView.vue'),
     },
     {
+      path: '/api-explorer',
+      name: 'api-explorer',
+      component: () => import('@/views/public/ApiExplorerView.vue'),
+    },
+    {
       path: '/games/:id',
       name: 'game-detail',
       component: () => import('@/views/public/GameDetailView.vue'),

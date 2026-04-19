@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import BaseButton from '@/components/ui/BaseButton.vue'
@@ -47,7 +48,6 @@ describe('BaseButton', () => {
   it('does not emit click when disabled', async () => {
     const wrapper = mount(BaseButton, { props: { disabled: true } })
     await wrapper.trigger('click')
-    // El botón nativo deshabilitado no propaga el click
     expect(wrapper.element.disabled).toBe(true)
   })
 
