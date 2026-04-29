@@ -24,23 +24,46 @@
     <LoadingSpinner v-if="gamesStore.loading" />
 
     <template v-else>
-      <p class="text-gray-500 text-sm mb-4">{{ gamesStore.pagination?.total || 0 }} juegos encontrados</p>
+  <p class="text-gray-500 text-sm mb-4">
+    {{ gamesStore.pagination?.total || 0 }} juegos encontrados
+  </p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-        <GameCard v-for="game in gamesStore.games" :key="game.id" :game="game" />
+  <!-- Estado vacío de búsqueda -->
+  <div v-if="gamesStore.games.length === 0" class="py-16">
+    <div class="max-w-sm mx-auto text-center">
+      <div class="w-24 h-24 rounded-full bg-gray-800 flex items-center justify-center mx-auto mb-6">
+        <span class="text-5xl">🔍</span>
       </div>
+      <h2 class="text-xl font-bold mb-2">Sin resultados</h2>
+      <p class="text-gray-500 mb-6">
+        No encontramos juegos que coincidan con tu búsqueda.
+        Prueba con otros filtros o términos.
+      </p>
+      <div class="flex flex-col gap-2">
+        <BaseButton @click="clearFilters">Limpiar filtros</BaseButton>
+        <p class="text-xs text-gray-600">
+          O prueba buscar por desarrollador, género o plataforma
+        </p>
+      </div>
+    </div>
+  </div>
 
-      <!-- Paginación -->
-      <div v-if="gamesStore.pagination?.lastPage > 1" class="flex flex-wrap justify-center gap-2 mt-8">
-        <BaseButton
-          v-for="page in gamesStore.pagination.lastPage" :key="page"
-          :variant="page === gamesStore.pagination.currentPage ? 'primary' : 'ghost'"
-          size="sm"
-          @click="goToPage(page)">
-          {{ page }}
-        </BaseButton>
-      </div>
-    </template>
+  <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+    <GameCard v-for="game in gamesStore.games" :key="game.id" :game="game" />
+  </div>
+
+  <!-- Paginación -->
+  <div v-if="gamesStore.pagination?.lastPage > 1"
+    class="flex flex-wrap justify-center gap-2 mt-8">
+    <BaseButton
+      v-for="page in gamesStore.pagination.lastPage" :key="page"
+      :variant="page === gamesStore.pagination.currentPage ? 'primary' : 'ghost'"
+      size="sm"
+      @click="goToPage(page)">
+      {{ page }}
+    </BaseButton>
+  </div>
+</template>
   </div>
 </template>
 
@@ -75,6 +98,11 @@ function buildParams(page = 1) {
   if (filters.value.sort === 'price_desc') { params.sort = 'price'; params.direction = 'desc' }
   if (filters.value.sort === 'title')      { params.sort = 'title'; params.direction = 'asc' }
   return params
+}
+
+function clearFilters() {
+  filters.value = { search: '', genre: '', sort: '' }
+  applyFilters()
 }
 
 async function applyFilters() { await gamesStore.fetchGames(buildParams()) }

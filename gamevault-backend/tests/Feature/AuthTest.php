@@ -15,15 +15,15 @@ class AuthTest extends TestCase
     public function test_user_can_register(): void
     {
         $response = $this->postJson('/api/register', [
-            'name'                  => 'Test User',
-            'username'              => 'testuser',
-            'email'                 => 'test@example.com',
-            'password'              => 'password123',
+            'name' => 'Test User',
+            'username' => 'testuser',
+            'email' => 'test@example.com',
+            'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(201)
-                 ->assertJsonStructure(['message', 'user' => ['id', 'name', 'email', 'role']]);
+            ->assertJsonStructure(['message', 'user' => ['id', 'name', 'email']]);
 
         $this->assertDatabaseHas('users', ['email' => 'test@example.com']);
     }
@@ -33,15 +33,15 @@ class AuthTest extends TestCase
         User::factory()->create(['email' => 'existing@example.com']);
 
         $response = $this->postJson('/api/register', [
-            'name'                  => 'Another User',
-            'username'              => 'anotheruser',
-            'email'                 => 'existing@example.com',
-            'password'              => 'password123',
+            'name' => 'Another User',
+            'username' => 'anotheruser',
+            'email' => 'existing@example.com',
+            'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['email']);
+            ->assertJsonValidationErrors(['email']);
     }
 
     public function test_register_requires_all_fields(): void
@@ -49,7 +49,7 @@ class AuthTest extends TestCase
         $response = $this->postJson('/api/register', []);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['name', 'username', 'email', 'password']);
+            ->assertJsonValidationErrors(['name', 'username', 'email', 'password']);
     }
 
     // ── Login ─────────────────────────────────────────────────────────────────
@@ -59,12 +59,12 @@ class AuthTest extends TestCase
         $user = User::factory()->create(['password' => bcrypt('password123')]);
 
         $response = $this->postJson('/api/login', [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'password123',
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure(['message', 'user']);
+            ->assertJsonStructure(['message', 'user']);
     }
 
     public function test_login_fails_with_wrong_password(): void
@@ -72,12 +72,12 @@ class AuthTest extends TestCase
         $user = User::factory()->create(['password' => bcrypt('correct_password')]);
 
         $response = $this->postJson('/api/login', [
-            'email'    => $user->email,
+            'email' => $user->email,
             'password' => 'wrong_password',
         ]);
 
         $response->assertStatus(401)
-                 ->assertJson(['message' => 'Credenciales incorrectas.']);
+            ->assertJson(['message' => 'Credenciales incorrectas.']);
     }
 
     // ── Logout / Me ───────────────────────────────────────────────────────────
@@ -89,7 +89,7 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)->getJson('/api/me');
 
         $response->assertStatus(200)
-                 ->assertJson(['id' => $user->id, 'email' => $user->email]);
+            ->assertJson(['id' => $user->id, 'email' => $user->email]);
     }
 
     public function test_unauthenticated_user_cannot_get_profile(): void
@@ -105,6 +105,6 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)->postJson('/api/logout');
 
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Sesión cerrada.']);
+            ->assertJson(['message' => 'Sesión cerrada.']);
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="w-full max-w-7xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-3xl font-bold">Gestión de juegos</h1>
       <RouterLink to="/admin/games/create">
@@ -43,7 +43,9 @@
                 <RouterLink :to="{ name: 'admin-game-edit', params: { id: game.id } }">
                   <BaseButton variant="ghost" size="sm">Editar</BaseButton>
                 </RouterLink>
-                <BaseButton variant="danger" size="sm" @click="handleDelete(game)">Eliminar</BaseButton>
+                <BaseButton variant="danger" size="sm" @click="handleDelete(game)">
+                  Eliminar
+                </BaseButton>
               </div>
             </td>
           </tr>
@@ -56,15 +58,18 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useGamesStore } from '@/stores/games'
+import { useToast } from '@/composables/useToast'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 
 const gamesStore = useGamesStore()
+const toast      = useToast()
 
 onMounted(() => gamesStore.fetchGames({ per_page: 50 }))
 
 async function handleDelete(game) {
   if (!confirm(`¿Eliminar "${game.title}"? Esta acción no se puede deshacer.`)) return
   await gamesStore.deleteGame(game.id)
+  toast.success(`"${game.title}" eliminado correctamente.`)
 }
 </script>

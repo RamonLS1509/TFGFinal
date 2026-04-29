@@ -54,8 +54,6 @@ async function handleRegister() {
     if (e.response?.status === 422) {
       const errs = e.response.data.errors || {}
       Object.keys(errs).forEach(k => { errors.value[k] = errs[k][0] })
-    } else {
-      serverError.value = e.response?.data?.message || 'Error al registrarse.'
     }
   } finally {
     loading.value = false

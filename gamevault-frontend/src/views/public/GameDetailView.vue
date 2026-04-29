@@ -12,9 +12,7 @@
 
       <!-- Header image -->
       <div class="w-full rounded-xl overflow-hidden mb-8 bg-gray-800" style="max-height: 400px;">
-        <img v-if="game.header_image || game.cover_image"
-          :src="game.header_image || game.cover_image"
-          :alt="game.title"
+        <img v-if="game.header_image || game.cover_image" :src="game.header_image || game.cover_image" :alt="game.title"
           class="w-full h-full object-cover" style="max-height: 400px;" />
       </div>
 
@@ -65,11 +63,8 @@
               Añadir a la biblioteca
             </BaseButton>
 
-            <BaseButton
-              @click="toggleWishlist"
-              :variant="inWishlist ? 'secondary' : 'ghost'"
-              size="md"
-              class="w-full">
+            <BaseButton v-if="!inLibrary" @click="toggleWishlist" :variant="inWishlist ? 'secondary' : 'ghost'"
+              size="md" class="w-full">
               {{ inWishlist ? '♥ En tu wishlist' : '♡ Añadir a wishlist' }}
             </BaseButton>
           </template>
@@ -86,6 +81,10 @@
           <p v-if="actionError" class="text-red-400 text-xs text-center">{{ actionError }}</p>
         </div>
       </div>
+      <!-- Reseñas — debajo del grid principal -->
+      <div class="lg:col-span-2">
+        <GameReviews :game-id="game.id" @change-page="loadPage" />
+      </div>
     </template>
   </div>
 </template>
@@ -99,6 +98,8 @@ import { useWishlistStore } from '@/stores/wishlist'
 import { useAuthStore } from '@/stores/auth'
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import GameReviews from '@/components/games/GameReviews.vue'
+import { useReviewsStore } from '@/stores/reviews'
 
 const route = useRoute()
 const gamesStore = useGamesStore()
@@ -118,6 +119,8 @@ const metaClass = computed(() => {
   if (s >= 50) return 'text-yellow-400'
   return 'text-red-400'
 })
+
+const reviewsStore = useReviewsStore()
 
 async function handleBuy() {
   buyLoading.value = true
@@ -151,8 +154,15 @@ async function toggleWishlist() {
 
 onMounted(async () => {
   await gamesStore.fetchGame(route.params.id)
+  const promises = [reviewsStore.fetchGameReviews(route.params.id)]
   if (auth.isAuthenticated) {
-    await Promise.all([libraryStore.fetchLibrary(), wishlistStore.fetchWishlist()])
+    promises.push(libraryStore.fetchLibrary())
+    promises.push(wishlistStore.fetchWishlist())
   }
+  await Promise.all(promises)
 })
+
+async function loadPage(page) {
+  await reviewsStore.fetchGameReviews(game.value.id, page)
+}
 </script>

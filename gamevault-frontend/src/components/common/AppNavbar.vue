@@ -10,31 +10,30 @@
 
       <!-- Nav links — escritorio -->
       <div class="hidden md:flex items-center gap-6 text-sm">
-        <RouterLink to="/catalog"
-          class="text-gray-300 hover:text-white transition-colors"
+        <RouterLink to="/catalog" class="text-gray-300 hover:text-white transition-colors"
           active-class="text-white font-medium">
           Catálogo
         </RouterLink>
-        <RouterLink to="/api-explorer"
-          class="text-gray-300 hover:text-white transition-colors"
+        <RouterLink to="/api-explorer" class="text-gray-300 hover:text-white transition-colors"
           active-class="text-white font-medium">
           API
         </RouterLink>
         <template v-if="auth.isAuthenticated">
-          <RouterLink to="/library"
-            class="text-gray-300 hover:text-white transition-colors"
+          <RouterLink to="/library" class="text-gray-300 hover:text-white transition-colors"
             active-class="text-white font-medium">
             Biblioteca
           </RouterLink>
-          <RouterLink to="/wishlist"
-            class="text-gray-300 hover:text-white transition-colors"
+          <RouterLink to="/wishlist" class="text-gray-300 hover:text-white transition-colors"
             active-class="text-white font-medium">
             Wishlist
           </RouterLink>
           <RouterLink v-if="auth.isAdmin" to="/admin/games"
-            class="text-yellow-400 hover:text-yellow-300 transition-colors"
-            active-class="text-yellow-300 font-medium">
+            class="text-yellow-400 hover:text-yellow-300 transition-colors" active-class="text-yellow-300 font-medium">
             Admin
+          </RouterLink>
+          <RouterLink to="/admin/users" class="text-yellow-400 hover:text-yellow-300 transition-colors"
+            active-class="text-yellow-300 font-medium">
+            Usuarios
           </RouterLink>
         </template>
       </div>
@@ -44,7 +43,8 @@
         <template v-if="auth.isAuthenticated">
           <RouterLink to="/profile"
             class="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition-colors">
-            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
+            <div
+              class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
               {{ auth.user.name.charAt(0).toUpperCase() }}
             </div>
             <span>{{ auth.user.name }}</span>
@@ -55,8 +55,7 @@
           </button>
         </template>
         <template v-else>
-          <RouterLink to="/login"
-            class="text-sm text-gray-300 hover:text-white transition-colors px-3 py-1.5">
+          <RouterLink to="/login" class="text-sm text-gray-300 hover:text-white transition-colors px-3 py-1.5">
             Iniciar sesión
           </RouterLink>
           <RouterLink to="/register"
@@ -70,10 +69,10 @@
       <button @click="menuOpen = !menuOpen"
         class="md:hidden p-2 rounded text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">
         <svg v-if="!menuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
         <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
     </div>
@@ -105,8 +104,11 @@
           class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
           Panel admin
         </RouterLink>
-        <button @click="handleLogout"
-          class="text-left text-red-400 hover:text-red-300 transition-colors py-2">
+        <RouterLink to="/admin/users" @click="menuOpen = false"
+          class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
+          Usuarios
+        </RouterLink>
+        <button @click="handleLogout" class="text-left text-red-400 hover:text-red-300 transition-colors py-2">
           Cerrar sesión
         </button>
       </template>

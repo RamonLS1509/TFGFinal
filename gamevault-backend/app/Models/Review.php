@@ -1,18 +1,38 @@
 <?php
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model {
-    protected $fillable = ['user_id', 'game_id', 'rating', 'title', 'body', 'recommended'];
+class Review extends Model
+{
+    use HasFactory;
 
-    protected $casts = ['recommended' => 'boolean'];
+    protected $fillable = [
+        'user_id',
+        'game_id',
+        'score',
+        'title',
+        'body',
+        'recommended',
+    ];
 
-    public function user() {
+    protected function casts(): array
+    {
+        return [
+            'recommended' => 'boolean',
+            'score'       => 'integer',
+        ];
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function game() {
+    public function game(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Game::class);
     }
 }

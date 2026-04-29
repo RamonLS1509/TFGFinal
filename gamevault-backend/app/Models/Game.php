@@ -74,4 +74,14 @@ class Game extends Model
     {
         return $query->whereJsonContains('genres', $genre);
     }
+
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+{
+    return $this->hasMany(Review::class);
+}
+
+public function averageScore(): float
+{
+    return round($this->reviews()->avg('score') ?? 0, 1);
+}
 }

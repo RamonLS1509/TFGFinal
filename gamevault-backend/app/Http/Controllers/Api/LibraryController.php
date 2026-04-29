@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class LibraryController extends Controller
 {
-    // Biblioteca del usuario autenticado
     public function index(Request $request): JsonResponse
     {
         $library = $request->user()
@@ -22,16 +21,12 @@ class LibraryController extends Controller
         return response()->json($library);
     }
 
-    // Añadir juego a la biblioteca (compra)
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'game_id' => ['required', 'exists:games,id'],
-        ]);
+        $request->validate(['game_id' => ['required', 'exists:games,id']]);
 
         $game = Game::findOrFail($request->game_id);
 
-        // Comprobar que no lo tiene ya
         $exists = Library::where('user_id', $request->user()->id)
                           ->where('game_id', $game->id)
                           ->exists();
@@ -50,33 +45,20 @@ class LibraryController extends Controller
         return response()->json($entry->load('game'), 201);
     }
 
-    // Ver una entrada de la biblioteca
     public function show(Request $request, Library $library): JsonResponse
     {
-        $this->authorize('view', $library);
+        if ($request->user()->id !== $library->user_id) {
+            return response()->json(['message' => 'No autorizado.'], 403);
+        }
 
         return response()->json($library->load('game'));
     }
 
-    // Actualizar horas jugadas
-    public function update(Request $request, Library $library): JsonResponse
-    {
-        $this->authorize('update', $library);
-
-        $request->validate([
-            'hours_played'   => ['sometimes', 'integer', 'min:0'],
-            'last_played_at' => ['sometimes', 'date'],
-        ]);
-
-        $library->update($request->only('hours_played', 'last_played_at'));
-
-        return response()->json($library->fresh()->load('game'));
-    }
-
-    // Eliminar juego de la biblioteca
     public function destroy(Request $request, Library $library): JsonResponse
     {
-        $this->authorize('delete', $library);
+        if ($request->user()->id !== $library->user_id) {
+            return response()->json(['message' => 'No autorizado.'], 403);
+        }
 
         $library->delete();
 

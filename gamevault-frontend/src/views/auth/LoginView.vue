@@ -61,7 +61,6 @@ async function handleLogin() {
   errors.value = {}
   serverError.value = ''
   loading.value = true
-
   try {
     await auth.login(form.value)
     const redirect = route.query.redirect || '/'
@@ -70,9 +69,10 @@ async function handleLogin() {
     if (e.response?.status === 422) {
       const errs = e.response.data.errors || {}
       Object.keys(errs).forEach(k => { errors.value[k] = errs[k][0] })
-    } else {
-      serverError.value = e.response?.data?.message || 'Error al iniciar sesión.'
+    } else if (e.response?.status === 401) {
+      serverError.value = 'Email o contraseña incorrectos.'
     }
+    // Los demás errores los gestiona el interceptor global
   } finally {
     loading.value = false
   }

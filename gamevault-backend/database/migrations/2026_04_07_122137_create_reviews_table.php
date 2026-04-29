@@ -6,26 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('game_id')->constrained()->onDelete('cascade');
-            $table->tinyInteger('rating')->unsigned(); // 1-10
-            $table->string('title');
+            $table->unsignedTinyInteger('score');  // 1-10
+            $table->string('title', 150);
             $table->text('body');
             $table->boolean('recommended')->default(true);
-            $table->unique(['user_id', 'game_id']);
             $table->timestamps();
+
+            $table->unique(['user_id', 'game_id']); // una reseña por usuario por juego
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('reviews');
