@@ -17,7 +17,8 @@ const router = createRouter({
     {
       path: '/api-explorer',
       name: 'api-explorer',
-      component: () => import('@/views/public/ApiExplorerView.vue'),
+      component: () => import('@/views/admin/ApiExplorerView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: '/games/:id',

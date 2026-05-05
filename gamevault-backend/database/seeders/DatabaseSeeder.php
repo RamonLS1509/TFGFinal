@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
 
         // Usuario normal
         User::create([
-            'name'     => 'Usuario Test',
-            'username' => 'testuser',
-            'email'    => 'user@steam.test',
-            'password' => Hash::make('password'),
+            'name'     => 'ramon',
+            'username' => 'ramon',
+            'email'    => 'ramon@gmail.com',
+            'password' => '12345678',
         ]);
 
         $this->call([

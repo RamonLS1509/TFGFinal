@@ -16,11 +16,9 @@
 
     <!-- Tabs -->
     <div class="flex gap-2 mb-8 flex-wrap">
-      <button v-for="tab in tabs" :key="tab.id"
-        @click="activeTab = tab.id"
-        :class="activeTab === tab.id
-          ? 'bg-blue-600 text-white'
-          : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'"
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="activeTab === tab.id
+        ? 'bg-blue-600 text-white'
+        : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'"
         class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
         {{ tab.label }}
       </button>
@@ -49,7 +47,8 @@
         <div class="bg-gray-900 rounded-xl border border-gray-800 p-6">
           <h3 class="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Usuarios registrados</h3>
           <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-blue-900/50 border border-blue-800 flex items-center justify-center text-2xl">
+            <div
+              class="w-16 h-16 rounded-full bg-blue-900/50 border border-blue-800 flex items-center justify-center text-2xl">
               👥
             </div>
             <div>
@@ -61,8 +60,60 @@
 
         <!-- JSON raw -->
         <div class="bg-gray-950 rounded-xl border border-gray-800 p-4">
-          <p class="text-xs text-gray-500 mb-2">Respuesta JSON</p>
-          <pre class="text-xs text-green-400 overflow-auto max-h-48">{{ JSON.stringify({ success: true, data: stats }, null, 2) }}</pre>
+          <p class="text-xs text-gray-500 mb-2">Usuarios registrados en la plataforma</p>
+
+          <LoadingSpinner v-if="loadingUsers" />
+
+          <div v-else-if="usersData" class="flex flex-col gap-2">
+            <div v-for="user in usersData.data" :key="user.id"
+              class="flex items-center gap-3 p-3 bg-gray-900 rounded-lg border border-gray-800">
+
+              <!-- Avatar -->
+              <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0"
+                :class="user.role === 'admin' ? 'bg-yellow-600' : 'bg-blue-600'">
+                {{ user.name.charAt(0).toUpperCase() }}
+              </div>
+
+              <!-- Info -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <p class="font-medium text-sm">{{ user.name }}</p>
+                  <span :class="user.role === 'admin'
+                    ? 'bg-yellow-900/50 text-yellow-400 border-yellow-800'
+                    : 'bg-gray-800 text-gray-400 border-gray-700'" class="text-xs border rounded-full px-2 py-0.5">
+                    {{ user.role === 'admin' ? '★ Admin' : 'Usuario' }}
+                  </span>
+                </div>
+                <p class="text-gray-500 text-xs">@{{ user.username }} · {{ user.email }}</p>
+              </div>
+
+              <!-- Stats -->
+              <div class="hidden sm:flex items-center gap-4 text-xs text-gray-500 flex-shrink-0">
+                <div class="text-center">
+                  <p class="text-blue-400 font-bold text-sm">{{ user.library_count }}</p>
+                  <p>juegos</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-pink-400 font-bold text-sm">{{ user.wishlist_count }}</p>
+                  <p>wishlist</p>
+                </div>
+                <div class="text-center">
+                  <p class="text-green-400 font-bold text-sm">{{ user.reviews_count }}</p>
+                  <p>reseñas</p>
+                </div>
+              </div>
+
+              <!-- Fecha registro -->
+              <div class="hidden md:block text-xs text-gray-600 flex-shrink-0 text-right">
+                <p>Registrado</p>
+                <p>{{ new Date(user.created_at).toLocaleDateString('es-ES') }}</p>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-600 text-right mt-1">
+              Total: {{ usersData.total }} usuario(s)
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -74,17 +125,18 @@
         <p class="text-gray-400 text-sm mb-4">Búsqueda avanzada — puedes buscar por cualquier campo</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          <BaseInput v-model="searchQuery"        label="Búsqueda (q) *"  placeholder="Elden Ring, FromSoftware..." />
-          <BaseInput v-model="searchFilters.genre"    label="Género"          placeholder="RPG" />
-          <BaseInput v-model="searchFilters.platform" label="Plataforma"      placeholder="Windows" />
-          <BaseInput v-model="searchFilters.min_price" label="Precio mínimo"  type="number" placeholder="0" />
-          <BaseInput v-model="searchFilters.max_price" label="Precio máximo"  type="number" placeholder="60" />
-          <BaseInput v-model="searchFilters.min_score" label="Score mínimo"   type="number" placeholder="75" />
+          <BaseInput v-model="searchQuery" label="Búsqueda (q) *" placeholder="Elden Ring, FromSoftware..." />
+          <BaseInput v-model="searchFilters.genre" label="Género" placeholder="RPG" />
+          <BaseInput v-model="searchFilters.platform" label="Plataforma" placeholder="Windows" />
+          <BaseInput v-model="searchFilters.min_price" label="Precio mínimo" type="number" placeholder="0" />
+          <BaseInput v-model="searchFilters.max_price" label="Precio máximo" type="number" placeholder="60" />
+          <BaseInput v-model="searchFilters.min_score" label="Score mínimo" type="number" placeholder="75" />
         </div>
 
         <!-- Info de campos buscables -->
         <div class="bg-gray-800 rounded-lg p-3 mb-4">
-          <p class="text-xs text-gray-400 mb-2 font-medium">El campo <code class="text-blue-400">q</code> busca en todos estos campos a la vez:</p>
+          <p class="text-xs text-gray-400 mb-2 font-medium">El campo <code class="text-blue-400">q</code> busca en todos
+            estos campos a la vez:</p>
           <div class="flex flex-wrap gap-2">
             <span v-for="field in searchableFields" :key="field"
               class="text-xs bg-gray-700 text-gray-300 rounded px-2 py-0.5">
@@ -127,8 +179,7 @@
           class="bg-gray-900 rounded-xl border border-gray-800 p-6">
 
           <div class="flex items-start gap-3 mb-3">
-            <span :class="methodClass(endpoint.method)"
-              class="text-xs font-bold rounded px-2 py-1 flex-shrink-0">
+            <span :class="methodClass(endpoint.method)" class="text-xs font-bold rounded px-2 py-1 flex-shrink-0">
               {{ endpoint.method }}
             </span>
             <div>
@@ -159,7 +210,8 @@
 
           <div class="mt-4">
             <p class="text-xs text-gray-500 uppercase tracking-wider mb-2">Ejemplo de respuesta</p>
-            <pre class="text-xs text-green-400 bg-gray-950 rounded p-3 overflow-auto max-h-48">{{ endpoint.example }}</pre>
+            <pre
+              class="text-xs text-green-400 bg-gray-950 rounded p-3 overflow-auto max-h-48">{{ endpoint.example }}</pre>
           </div>
         </div>
       </div>
@@ -174,16 +226,31 @@ import { publicApi } from '@/services/publicApi'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import GameCard from '@/components/games/GameCard.vue'
+import api from '@/services/api'
+import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
+
+const usersData = ref(null)
+const loadingUsers = ref(false)
+
+async function loadUsers() {
+  loadingUsers.value = true
+  try {
+    const { data } = await api.get('/api/admin/users')
+    usersData.value = data
+  } finally {
+    loadingUsers.value = false
+  }
+}
 
 const activeTab = ref('stats')
 const tabs = [
-  { id: 'stats',  label: '📊 Stats'  },
+  { id: 'stats', label: '📊 Stats' },
   { id: 'search', label: '🔍 Search' },
-  { id: 'docs',   label: '📄 Docs'   },
+  { id: 'docs', label: '📄 Docs' },
 ]
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
-const stats        = ref(null)
+const stats = ref(null)
 const loadingStats = ref(false)
 
 async function loadStats() {
@@ -197,10 +264,10 @@ async function loadStats() {
 }
 
 // ── Search ────────────────────────────────────────────────────────────────────
-const searchQuery   = ref('')
+const searchQuery = ref('')
 const searchFilters = ref({ genre: '', platform: '', min_price: '', max_price: '', min_score: '' })
 const searchResults = ref(null)
-const lastQuery     = ref('')
+const lastQuery = ref('')
 const loadingSearch = ref(false)
 
 const searchableFields = ['título', 'descripción', 'desarrollador', 'publisher']
@@ -223,9 +290,9 @@ async function loadSearch() {
 // ── Docs ──────────────────────────────────────────────────────────────────────
 function methodClass(method) {
   return {
-    GET:    'bg-green-900/50 text-green-400 border border-green-800',
-    POST:   'bg-blue-900/50 text-blue-400 border border-blue-800',
-    PUT:    'bg-yellow-900/50 text-yellow-400 border border-yellow-800',
+    GET: 'bg-green-900/50 text-green-400 border border-green-800',
+    POST: 'bg-blue-900/50 text-blue-400 border border-blue-800',
+    PUT: 'bg-yellow-900/50 text-yellow-400 border border-yellow-800',
     DELETE: 'bg-red-900/50 text-red-400 border border-red-800',
   }[method] ?? 'bg-gray-800 text-gray-400'
 }
@@ -274,13 +341,13 @@ const endpoints = [
     method: 'GET', path: '/api/v1/search', auth: false,
     description: 'Búsqueda avanzada. El campo q busca en título, descripción, desarrollador y publisher simultáneamente.',
     params: [
-      { name: 'q',          type: 'string',  required: true,  description: 'Texto a buscar (mín. 2 caracteres). Busca en título, descripción, desarrollador y publisher.' },
-      { name: 'genre',      type: 'string',  required: false, description: 'Filtrar por género exacto' },
-      { name: 'platform',   type: 'string',  required: false, description: 'Filtrar por plataforma exacta' },
-      { name: 'min_price',  type: 'number',  required: false, description: 'Precio mínimo (€)' },
-      { name: 'max_price',  type: 'number',  required: false, description: 'Precio máximo (€)' },
-      { name: 'min_score',  type: 'integer', required: false, description: 'Puntuación Metacritic mínima (0-100)' },
-      { name: 'limit',      type: 'integer', required: false, description: 'Número de resultados máximo (máx. 50)' },
+      { name: 'q', type: 'string', required: true, description: 'Texto a buscar (mín. 2 caracteres). Busca en título, descripción, desarrollador y publisher.' },
+      { name: 'genre', type: 'string', required: false, description: 'Filtrar por género exacto' },
+      { name: 'platform', type: 'string', required: false, description: 'Filtrar por plataforma exacta' },
+      { name: 'min_price', type: 'number', required: false, description: 'Precio mínimo (€)' },
+      { name: 'max_price', type: 'number', required: false, description: 'Precio máximo (€)' },
+      { name: 'min_score', type: 'integer', required: false, description: 'Puntuación Metacritic mínima (0-100)' },
+      { name: 'limit', type: 'integer', required: false, description: 'Número de resultados máximo (máx. 50)' },
     ],
     example: `{
   "success": true,
@@ -317,13 +384,13 @@ const endpoints = [
     method: 'GET', path: '/api/games', auth: false,
     description: 'Listado paginado de juegos activos con filtros.',
     params: [
-      { name: 'search',    type: 'string',  required: false, description: 'Buscar por título' },
-      { name: 'genre',     type: 'string',  required: false, description: 'Filtrar por género' },
-      { name: 'platform',  type: 'string',  required: false, description: 'Filtrar por plataforma' },
-      { name: 'max_price', type: 'number',  required: false, description: 'Precio máximo' },
-      { name: 'sort',      type: 'string',  required: false, description: 'Campo de ordenación: price, title, release_date' },
-      { name: 'direction', type: 'string',  required: false, description: 'Dirección: asc, desc' },
-      { name: 'page',      type: 'integer', required: false, description: 'Número de página (12 por página)' },
+      { name: 'search', type: 'string', required: false, description: 'Buscar por título' },
+      { name: 'genre', type: 'string', required: false, description: 'Filtrar por género' },
+      { name: 'platform', type: 'string', required: false, description: 'Filtrar por plataforma' },
+      { name: 'max_price', type: 'number', required: false, description: 'Precio máximo' },
+      { name: 'sort', type: 'string', required: false, description: 'Campo de ordenación: price, title, release_date' },
+      { name: 'direction', type: 'string', required: false, description: 'Dirección: asc, desc' },
+      { name: 'page', type: 'integer', required: false, description: 'Número de página (12 por página)' },
     ],
     example: `{
   "current_page": 1, "total": 3, "per_page": 12,
@@ -348,7 +415,7 @@ const endpoints = [
     method: 'GET', path: '/api/games/{game}/reviews', auth: false,
     description: 'Reseñas de un juego con estadísticas de puntuación.',
     params: [
-      { name: 'game', type: 'integer', required: true,  description: 'ID del juego' },
+      { name: 'game', type: 'integer', required: true, description: 'ID del juego' },
       { name: 'page', type: 'integer', required: false, description: 'Número de página' },
     ],
     example: `{
@@ -364,11 +431,11 @@ const endpoints = [
     method: 'POST', path: '/api/register', auth: false,
     description: 'Registro de un nuevo usuario.',
     params: [
-      { name: 'name',                  type: 'string', required: true,  description: 'Nombre completo' },
-      { name: 'username',              type: 'string', required: true,  description: 'Nombre de usuario único (alpha_dash)' },
-      { name: 'email',                 type: 'string', required: true,  description: 'Email único' },
-      { name: 'password',              type: 'string', required: true,  description: 'Contraseña (mín. 8 caracteres)' },
-      { name: 'password_confirmation', type: 'string', required: true,  description: 'Confirmación de contraseña' },
+      { name: 'name', type: 'string', required: true, description: 'Nombre completo' },
+      { name: 'username', type: 'string', required: true, description: 'Nombre de usuario único (alpha_dash)' },
+      { name: 'email', type: 'string', required: true, description: 'Email único' },
+      { name: 'password', type: 'string', required: true, description: 'Contraseña (mín. 8 caracteres)' },
+      { name: 'password_confirmation', type: 'string', required: true, description: 'Confirmación de contraseña' },
     ],
     example: `{
   "message": "Usuario registrado correctamente.",
@@ -379,7 +446,7 @@ const endpoints = [
     method: 'POST', path: '/api/login', auth: false,
     description: 'Inicio de sesión. Requiere obtener el CSRF cookie antes (/sanctum/csrf-cookie).',
     params: [
-      { name: 'email',    type: 'string', required: true, description: 'Email del usuario' },
+      { name: 'email', type: 'string', required: true, description: 'Email del usuario' },
       { name: 'password', type: 'string', required: true, description: 'Contraseña' },
     ],
     example: `{
@@ -417,10 +484,10 @@ const endpoints = [
     method: 'PUT', path: '/api/profile', auth: true,
     description: 'Actualizar datos del perfil del usuario.',
     params: [
-      { name: 'name',     type: 'string', required: false, description: 'Nombre completo' },
+      { name: 'name', type: 'string', required: false, description: 'Nombre completo' },
       { name: 'username', type: 'string', required: false, description: 'Nombre de usuario único' },
-      { name: 'bio',      type: 'string', required: false, description: 'Biografía (máx. 300 caracteres)' },
-      { name: 'avatar',   type: 'string', required: false, description: 'URL del avatar' },
+      { name: 'bio', type: 'string', required: false, description: 'Biografía (máx. 300 caracteres)' },
+      { name: 'avatar', type: 'string', required: false, description: 'URL del avatar' },
     ],
     example: `{
   "message": "Perfil actualizado correctamente.",
@@ -431,8 +498,8 @@ const endpoints = [
     method: 'PUT', path: '/api/profile/password', auth: true,
     description: 'Cambiar la contraseña del usuario.',
     params: [
-      { name: 'current_password',      type: 'string', required: true, description: 'Contraseña actual' },
-      { name: 'password',              type: 'string', required: true, description: 'Nueva contraseña (mín. 8 caracteres)' },
+      { name: 'current_password', type: 'string', required: true, description: 'Contraseña actual' },
+      { name: 'password', type: 'string', required: true, description: 'Nueva contraseña (mín. 8 caracteres)' },
       { name: 'password_confirmation', type: 'string', required: true, description: 'Confirmación de nueva contraseña' },
     ],
     example: `{ "message": "Contraseña actualizada correctamente." }`,
@@ -485,7 +552,7 @@ const endpoints = [
     method: 'POST', path: '/api/wishlist', auth: true,
     description: 'Añadir un juego a la wishlist. No puede estar ya en biblioteca ni en wishlist.',
     params: [
-      { name: 'game_id',  type: 'integer', required: true,  description: 'ID del juego' },
+      { name: 'game_id', type: 'integer', required: true, description: 'ID del juego' },
       { name: 'priority', type: 'integer', required: false, description: 'Prioridad: 0 = normal, 1 = favorito' },
     ],
     example: `{ "id": 1, "game_id": 2, "priority": 0 }`,
@@ -512,10 +579,10 @@ const endpoints = [
     method: 'POST', path: '/api/reviews', auth: true,
     description: 'Crear una reseña. Solo una reseña por juego por usuario.',
     params: [
-      { name: 'game_id',     type: 'integer', required: true,  description: 'ID del juego' },
-      { name: 'score',       type: 'integer', required: true,  description: 'Puntuación del 1 al 10' },
-      { name: 'title',       type: 'string',  required: true,  description: 'Título de la reseña (máx. 150 caracteres)' },
-      { name: 'body',        type: 'string',  required: true,  description: 'Cuerpo de la reseña (mín. 20, máx. 2000 caracteres)' },
+      { name: 'game_id', type: 'integer', required: true, description: 'ID del juego' },
+      { name: 'score', type: 'integer', required: true, description: 'Puntuación del 1 al 10' },
+      { name: 'title', type: 'string', required: true, description: 'Título de la reseña (máx. 150 caracteres)' },
+      { name: 'body', type: 'string', required: true, description: 'Cuerpo de la reseña (mín. 20, máx. 2000 caracteres)' },
       { name: 'recommended', type: 'boolean', required: false, description: 'Si recomienda el juego (default: true)' },
     ],
     example: `{
@@ -528,10 +595,10 @@ const endpoints = [
     method: 'PUT', path: '/api/reviews/{review}', auth: true,
     description: 'Actualizar una reseña propia.',
     params: [
-      { name: 'review',      type: 'integer', required: true,  description: 'ID de la reseña' },
-      { name: 'score',       type: 'integer', required: false, description: 'Nueva puntuación (1-10)' },
-      { name: 'title',       type: 'string',  required: false, description: 'Nuevo título' },
-      { name: 'body',        type: 'string',  required: false, description: 'Nuevo cuerpo' },
+      { name: 'review', type: 'integer', required: true, description: 'ID de la reseña' },
+      { name: 'score', type: 'integer', required: false, description: 'Nueva puntuación (1-10)' },
+      { name: 'title', type: 'string', required: false, description: 'Nuevo título' },
+      { name: 'body', type: 'string', required: false, description: 'Nuevo cuerpo' },
       { name: 'recommended', type: 'boolean', required: false, description: 'Nueva recomendación' },
     ],
     example: `{ "id": 1, "score": 10, "title": "Título actualizado" }`,
@@ -548,5 +615,6 @@ const endpoints = [
 
 onMounted(() => {
   loadStats()
+  loadUsers()
 })
 </script>

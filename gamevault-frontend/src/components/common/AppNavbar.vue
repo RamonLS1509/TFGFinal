@@ -14,10 +14,7 @@
           active-class="text-white font-medium">
           Catálogo
         </RouterLink>
-        <RouterLink to="/api-explorer" class="text-gray-300 hover:text-white transition-colors"
-          active-class="text-white font-medium">
-          API
-        </RouterLink>
+
         <template v-if="auth.isAuthenticated">
           <RouterLink to="/library" class="text-gray-300 hover:text-white transition-colors"
             active-class="text-white font-medium">
@@ -27,14 +24,21 @@
             active-class="text-white font-medium">
             Wishlist
           </RouterLink>
-          <RouterLink v-if="auth.isAdmin" to="/admin/games"
-            class="text-yellow-400 hover:text-yellow-300 transition-colors" active-class="text-yellow-300 font-medium">
-            Admin
-          </RouterLink>
-          <RouterLink to="/admin/users" class="text-yellow-400 hover:text-yellow-300 transition-colors"
-            active-class="text-yellow-300 font-medium">
-            Usuarios
-          </RouterLink>
+
+          <template v-if="auth.isAdmin">
+            <RouterLink to="/api-explorer" class="text-yellow-400 hover:text-yellow-300 transition-colors"
+              active-class="text-yellow-300 font-medium">
+              API
+            </RouterLink>
+            <RouterLink to="/admin/games" class="text-yellow-400 hover:text-yellow-300 transition-colors"
+              active-class="text-yellow-300 font-medium">
+              Admin
+            </RouterLink>
+            <RouterLink to="/admin/users" class="text-yellow-400 hover:text-yellow-300 transition-colors"
+              active-class="text-yellow-300 font-medium">
+              Usuarios
+            </RouterLink>
+          </template>
         </template>
       </div>
 
@@ -83,10 +87,7 @@
         class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
         Catálogo
       </RouterLink>
-      <RouterLink to="/api-explorer" @click="menuOpen = false"
-        class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
-        API Explorer
-      </RouterLink>
+
       <template v-if="auth.isAuthenticated">
         <RouterLink to="/library" @click="menuOpen = false"
           class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
@@ -100,28 +101,25 @@
           class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
           Mi perfil
         </RouterLink>
-        <RouterLink v-if="auth.isAdmin" to="/admin/games" @click="menuOpen = false"
-          class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
-          Panel admin
-        </RouterLink>
-        <RouterLink to="/admin/users" @click="menuOpen = false"
-          class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
-          Usuarios
-        </RouterLink>
+
+        <template v-if="auth.isAdmin">
+          <RouterLink to="/api-explorer" @click="menuOpen = false"
+            class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
+            API Explorer
+          </RouterLink>
+          <RouterLink to="/admin/games" @click="menuOpen = false"
+            class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
+            Panel admin
+          </RouterLink>
+          <RouterLink to="/admin/users" @click="menuOpen = false"
+            class="text-yellow-400 hover:text-yellow-300 transition-colors py-2 border-b border-gray-800">
+            Usuarios
+          </RouterLink>
+        </template>
+
         <button @click="handleLogout" class="text-left text-red-400 hover:text-red-300 transition-colors py-2">
           Cerrar sesión
         </button>
-      </template>
-
-      <template v-else>
-        <RouterLink to="/login" @click="menuOpen = false"
-          class="text-gray-300 hover:text-white transition-colors py-2 border-b border-gray-800">
-          Iniciar sesión
-        </RouterLink>
-        <RouterLink to="/register" @click="menuOpen = false"
-          class="text-blue-400 hover:text-blue-300 font-medium transition-colors py-2">
-          Registrarse
-        </RouterLink>
       </template>
     </div>
   </nav>
