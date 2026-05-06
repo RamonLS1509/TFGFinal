@@ -1,0 +1,72 @@
+📋 Plan de Pruebas – Casos de Test
+
+🔓 1. Usuario sin iniciar sesión
+| ID     | Caso de prueba          | Pasos                                       | Resultado esperado                              |
+| ------ | ----------------------- | ------------------------------------------- | ----------------------------------------------- |
+| TC-001 | Visualización inicial   | Acceder a la web sin iniciar sesión         | Se muestra botón “Catálogo” y juegos destacados |
+| TC-002 | Acceso a catálogo       | Pulsar en “Catálogo” o “Explorar catálogo”  | Redirección a la lista de juegos                |
+| TC-003 | Ver detalle de juego    | Seleccionar un juego                        | Se muestra información completa del juego       |
+| TC-004 | Restricciones sin login | Intentar comprar / añadir wishlist / reseña | No se permite ninguna acción                    |
+
+📝 2. Registro de usuario
+| ID     | Caso de prueba       | Pasos                             | Resultado esperado                |
+| ------ | -------------------- | --------------------------------- | --------------------------------- |
+| TC-005 | Registro correcto    | Introducir datos válidos y enviar | Usuario creado correctamente      |
+| TC-006 | Validación de campos | Introducir datos inválidos        | Se muestran errores de validación |
+
+👤 3. Usuario normal (sesión iniciada)
+🔐 Login
+| ID     | Caso de prueba   | Pasos                                 | Resultado esperado     |
+| ------ | ---------------- | ------------------------------------- | ---------------------- |
+| TC-007 | Login correcto   | Introducir email y contraseña válidos | Acceso concedido       |
+| TC-008 | Login incorrecto | Introducir credenciales erróneas      | Error de autenticación |
+🎮 Catálogo y reseñas
+| ID     | Caso de prueba        | Pasos                         | Resultado esperado                     |
+| ------ | --------------------- | ----------------------------- | -------------------------------------- |
+| TC-009 | Ver catálogo          | Acceder a catálogo            | Se muestran juegos disponibles         |
+| TC-010 | Crear reseña          | Entrar a juego y crear reseña | Reseña creada correctamente            |
+| TC-011 | Visualización reseñas | Ver reseñas del juego         | Se muestra media, porcentaje y gráfica |
+| TC-012 | Editar reseña         | Editar reseña propia          | Cambios guardados                      |
+| TC-013 | Eliminar reseña       | Eliminar reseña propia        | Reseña eliminada                       |
+📚 Biblioteca
+| ID     | Caso de prueba        | Pasos                   | Resultado esperado                     |
+| ------ | --------------------- | ----------------------- | -------------------------------------- |
+| TC-014 | Biblioteca vacía      | Acceder sin juegos      | Opción de explorar catálogo o wishlist |
+| TC-015 | Añadir juego          | Comprar juego           | Aparece en biblioteca                  |
+| TC-016 | Información de compra | Ver juego en biblioteca | Muestra fecha y precio                 |
+💖 Wishlist
+| ID     | Caso de prueba         | Pasos                | Resultado esperado      |
+| ------ | ---------------------- | -------------------- | ----------------------- |
+| TC-017 | Wishlist vacía         | Acceder sin juegos   | Botón explorar catálogo |
+| TC-018 | Añadir a wishlist      | Añadir juego         | Aparece en wishlist     |
+| TC-019 | Eliminar de wishlist   | Eliminar juego       | Desaparece de la lista  |
+| TC-020 | Marcar favorito        | Seleccionar favorito | Se guarda correctamente |
+| TC-021 | Comprar desde wishlist | Comprar juego        | Se mueve a biblioteca   |
+👤 Perfil
+| ID     | Caso de prueba     | Pasos                     | Resultado esperado        |
+| ------ | ------------------ | ------------------------- | ------------------------- |
+| TC-022 | Ver perfil         | Acceder al perfil         | Se muestra avatar y datos |
+| TC-023 | Editar perfil      | Modificar datos           | Cambios guardados         |
+| TC-024 | Cambiar contraseña | Introducir actual y nueva | Contraseña actualizada    |
+⚠️ Reglas de negocio
+| ID     | Caso de prueba      | Pasos                      | Resultado esperado                |
+| ------ | ------------------- | -------------------------- | --------------------------------- |
+| TC-025 | Juego en biblioteca | Intentar añadir a wishlist | No permitido, mensaje informativo |
+
+🛠️ 4. Usuario administrador
+🔌 API
+| ID     | Caso de prueba   | Pasos                 | Resultado esperado               |
+| ------ | ---------------- | --------------------- | -------------------------------- |
+| TC-026 | Ver estadísticas | Acceder a API → Stats | Se muestran usuarios registrados |
+| TC-027 | Búsqueda         | Usar buscador         | Resultados correctos             |
+| TC-028 | Documentación    | Acceder a Docs        | Se muestran endpoints            |
+🎮 Administración de juegos
+| ID     | Caso de prueba | Pasos            | Resultado esperado |
+| ------ | -------------- | ---------------- | ------------------ |
+| TC-029 | Crear juego    | Introducir datos | Juego creado       |
+| TC-030 | Editar juego   | Modificar juego  | Cambios guardados  |
+| TC-031 | Eliminar juego | Eliminar juego   | Juego eliminado    |
+👥 Gestión de usuarios
+| ID     | Caso de prueba   | Pasos                        | Resultado esperado |
+| ------ | ---------------- | ---------------------------- | ------------------ |
+| TC-032 | Eliminar usuario | Eliminar usuario desde panel | Usuario eliminado  |

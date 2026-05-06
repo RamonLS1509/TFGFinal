@@ -32,9 +32,6 @@
             <h2 class="text-xl font-bold">GET /stats</h2>
             <p class="text-gray-400 text-sm mt-1">Estadísticas globales de la plataforma</p>
           </div>
-          <BaseButton @click="loadStats" :loading="loadingStats" size="sm">
-            Ejecutar
-          </BaseButton>
         </div>
         <code class="block text-xs text-gray-500 bg-gray-800 rounded px-3 py-2">
           GET http://localhost:8000/api/v1/stats
