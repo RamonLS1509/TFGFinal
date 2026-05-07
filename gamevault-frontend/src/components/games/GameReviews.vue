@@ -43,27 +43,6 @@
     <!-- Formulario para escribir reseña -->
     <div v-if="auth.isAuthenticated" class="mb-8">
 
-      <!-- Reseña existente del usuario
-      <div v-if="reviewsStore.myReview && !editing"
-        class="bg-blue-950/30 border border-blue-800/50 rounded-xl p-5 mb-4">
-        <div class="flex items-start justify-between gap-4">
-          <div class="flex-1">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-xs text-blue-400 font-medium">Tu reseña</span>
-              <span class="text-gray-500 text-xs">{{ reviewsStore.myReview.score }}/10</span>
-            </div>
-            <p class="font-medium">{{ reviewsStore.myReview.title }}</p>
-            <p class="text-gray-400 text-sm mt-1">{{ reviewsStore.myReview.body }}</p>
-          </div>
-          <div class="flex gap-2 flex-shrink-0">
-            <BaseButton size="sm" variant="ghost" @click="startEdit">Editar</BaseButton>
-            <BaseButton size="sm" variant="danger" @click="handleDelete" :loading="deleting">
-              Eliminar
-            </BaseButton>
-          </div>
-        </div>
-      </div>
--->
       <!-- Reseña existente del usuario -->
       <div v-if="reviewsStore.myReview && reviewsStore.myReview.id && !editing"
         class="bg-blue-950/30 border border-blue-800/50 rounded-xl p-5 mb-4">
