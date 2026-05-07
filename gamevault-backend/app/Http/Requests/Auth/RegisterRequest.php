@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
@@ -14,7 +15,29 @@ class RegisterRequest extends FormRequest
             'name'     => ['required', 'string', 'max:100'],
             'username' => ['required', 'string', 'max:30', 'unique:users,username', 'alpha_dash'],
             'email'    => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'password.min'         => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.letters'     => 'La contraseña debe contener al menos una letra.',
+            'password.mixed_case'  => 'La contraseña debe contener mayúsculas y minúsculas.',
+            'password.numbers'     => 'La contraseña debe contener al menos un número.',
+            'password.symbols'     => 'La contraseña debe contener al menos un símbolo (!@#$%...).',
+            'password.uncompromised' => 'Esta contraseña ha sido comprometida en filtraciones de datos. Elige otra.',
+            'password.confirmed'   => 'Las contraseñas no coinciden.',
         ];
     }
 }

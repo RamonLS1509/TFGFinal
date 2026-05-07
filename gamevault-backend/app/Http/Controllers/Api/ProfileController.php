@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rules\Password;
 class ProfileController extends Controller
 {
     public function show(Request $request): JsonResponse
@@ -49,16 +49,34 @@ class ProfileController extends Controller
     }
 
     public function changePassword(Request $request): JsonResponse
-    {
-        $request->validate([
-            'current_password' => ['required', 'string', 'current_password'],
-            'password'         => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+{
+    $request->validate([
+        'current_password' => ['required', 'string', 'current_password'],
+        'password'         => [
+            'required',
+            'confirmed',
+            Password::min(8)
+                ->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised(),
+        ],
+    ], [
+        'current_password.current_password' => 'La contraseña actual no es correcta.',
+        'password.min'           => 'La contraseña debe tener al menos 8 caracteres.',
+        'password.letters'       => 'La contraseña debe contener al menos una letra.',
+        'password.mixed_case'    => 'La contraseña debe contener mayúsculas y minúsculas.',
+        'password.numbers'       => 'La contraseña debe contener al menos un número.',
+        'password.symbols'       => 'La contraseña debe contener al menos un símbolo (!@#$%...).',
+        'password.uncompromised' => 'Esta contraseña ha sido comprometida en filtraciones de datos. Elige otra.',
+        'password.confirmed'     => 'Las contraseñas no coinciden.',
+    ]);
 
-        $request->user()->update([
-            'password' => $request->password,
-        ]);
+    $request->user()->update([
+        'password' => $request->password,
+    ]);
 
-        return response()->json(['message' => 'Contraseña actualizada correctamente.']);
-    }
+    return response()->json(['message' => 'Contraseña actualizada correctamente.']);
+}
 }

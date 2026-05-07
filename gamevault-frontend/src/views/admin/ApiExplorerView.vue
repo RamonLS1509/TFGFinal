@@ -122,7 +122,7 @@
         <p class="text-gray-400 text-sm mb-4">Búsqueda avanzada — puedes buscar por cualquier campo</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          <BaseInput v-model="searchQuery" label="Búsqueda (q) *" placeholder="Elden Ring, FromSoftware..." />
+          <BaseInput v-model="searchQuery" label="Búsqueda (q)" placeholder="Elden Ring, FromSoftware..." />
           <BaseInput v-model="searchFilters.genre" label="Género" placeholder="RPG" />
           <BaseInput v-model="searchFilters.platform" label="Plataforma" placeholder="Windows" />
           <BaseInput v-model="searchFilters.min_price" label="Precio mínimo" type="number" placeholder="0" />
@@ -143,7 +143,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <BaseButton @click="loadSearch" :loading="loadingSearch" :disabled="searchQuery.length < 2">
+          <BaseButton @click="loadSearch" :loading="loadingSearch">
             Buscar
           </BaseButton>
           <code class="text-xs text-gray-500 bg-gray-800 rounded px-3 py-2 flex-1 truncate">
@@ -270,14 +270,17 @@ const loadingSearch = ref(false)
 const searchableFields = ['título', 'descripción', 'desarrollador', 'publisher']
 
 async function loadSearch() {
-  if (searchQuery.value.length < 2) return
   loadingSearch.value = true
   lastQuery.value = searchQuery.value
   try {
     const filters = Object.fromEntries(
       Object.entries(searchFilters.value).filter(([, v]) => v !== '')
     )
-    const { data } = await publicApi.search(searchQuery.value, filters)
+    const params = {}
+    if (searchQuery.value) params.q = searchQuery.value
+    Object.assign(params, filters)
+
+    const { data } = await publicApi.search(searchQuery.value || '*', filters)
     searchResults.value = data.data
   } finally {
     loadingSearch.value = false

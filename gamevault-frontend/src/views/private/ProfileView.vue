@@ -150,6 +150,7 @@
               placeholder="Mínimo 8 caracteres"
               autocomplete="new-password"
             />
+            <PasswordStrength :password="passwordForm.password" />
             <BaseInput
               label="Confirmar nueva contraseña"
               type="password"
@@ -185,6 +186,7 @@ import { useLibraryStore } from '@/stores/library'
 import { useWishlistStore } from '@/stores/wishlist'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import PasswordStrength from '@/components/ui/PasswordStrength.vue'
 
 const auth = useAuthStore()
 const libraryStore = useLibraryStore()
