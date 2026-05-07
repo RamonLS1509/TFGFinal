@@ -72,7 +72,7 @@ class GameController extends Controller
     }
 
     // Admin: listado completo (incluye inactivos)
-    public function adminIndex(Request $request): JsonResponse
+    public function adminIndex(): JsonResponse
     {
         $games = Game::orderBy('created_at', 'desc')->paginate(20);
         return response()->json($games);

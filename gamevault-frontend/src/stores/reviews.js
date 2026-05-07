@@ -80,23 +80,6 @@ export const useReviewsStore = defineStore('reviews', () => {
     toast.success('Reseña eliminada.')
   }
 
-  async function handleBuy() {
-  buyLoading.value = true
-  actionError.value = ''
-  try {
-    await libraryStore.addToLibrary(game.value.id)
-    // Si estaba en wishlist, se elimina automáticamente al comprar
-    if (inWishlist.value) {
-      const entry = wishlistStore.getEntry(game.value.id)
-      await wishlistStore.removeFromWishlist(entry.id)
-    }
-  } catch (e) {
-    actionError.value = e.response?.data?.message || 'Error al añadir el juego.'
-  } finally {
-    buyLoading.value = false
-  }
-}
-
   function reset() {
     reviews.value    = []
     stats.value      = null

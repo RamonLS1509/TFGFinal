@@ -88,17 +88,6 @@ class ReviewController extends Controller
         return response()->json(['message' => 'Reseña eliminada.']);
     }
 
-    // Privado: reseñas del usuario autenticado
-    public function myReviews(Request $request): JsonResponse
-    {
-        $reviews = $request->user()
-            ->reviews()
-            ->with('game:id,title,slug,cover_image')
-            ->latest()
-            ->get();
-
-        return response()->json($reviews);
-    }
 
     // Público: reseña de un usuario concreto para un juego
     public function userReview(Request $request, Game $game): JsonResponse

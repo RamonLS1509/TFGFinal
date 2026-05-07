@@ -20,9 +20,8 @@
         <p v-if="errors.description" class="text-red-400 text-xs mt-1">{{ errors.description }}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-1 gap-5">
         <BaseInput label="URL portada" v-model="form.cover_image" :error="errors.cover_image" placeholder="https://..." />
-        <BaseInput label="URL header" v-model="form.header_image" :error="errors.header_image" placeholder="https://..." />
       </div>
 
       <!-- Géneros -->
@@ -88,7 +87,7 @@ const availablePlatforms = ['Windows', 'Mac', 'Linux', 'PlayStation', 'Xbox', 'N
 
 const form = ref({
   title: '', description: '', developer: '', publisher: '',
-  price: '', cover_image: '', header_image: '',
+  price: '', cover_image: '',
   genres: [], platforms: [], release_date: '',
   metacritic_score: '', is_active: true,
 })

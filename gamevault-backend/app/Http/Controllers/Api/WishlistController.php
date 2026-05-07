@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Wishlist;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Library;
 
 class WishlistController extends Controller
 {
@@ -29,7 +30,7 @@ class WishlistController extends Controller
     ]);
 
     // No se puede añadir a wishlist si ya está en biblioteca
-    $inLibrary = \App\Models\Library::where('user_id', $request->user()->id)
+    $inLibrary = Library::where('user_id', $request->user()->id)
                                      ->where('game_id', $request->game_id)
                                      ->exists();
 

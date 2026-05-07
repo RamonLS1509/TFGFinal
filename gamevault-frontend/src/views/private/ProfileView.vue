@@ -147,7 +147,7 @@
               type="password"
               v-model="passwordForm.password"
               :error="passwordErrors.password"
-              placeholder="Mínimo 8 caracteres"
+              placeholder="Nueva contraseña"
               autocomplete="new-password"
             />
             <PasswordStrength :password="passwordForm.password" />

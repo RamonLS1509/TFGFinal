@@ -19,14 +19,6 @@ class DatabaseSeeder extends Seeder
             'role'     => 'admin',
         ]);
 
-        // Usuario normal
-        User::create([
-            'name'     => 'ramon',
-            'username' => 'ramon',
-            'email'    => 'ramon@gmail.com',
-            'password' => '12345678',
-        ]);
-
         $this->call([
             GameSeeder::class,
         ]);

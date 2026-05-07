@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function users(Request $request): JsonResponse
+    public function users(): JsonResponse
     {
         $users = User::withCount(['library', 'wishlist', 'reviews'])
             ->orderBy('created_at', 'desc')

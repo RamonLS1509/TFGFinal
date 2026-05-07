@@ -8,11 +8,6 @@ export const publicApi = {
     return api.get(`${BASE}/stats`)
   },
 
-  // Rankings: most_owned | top_rated | most_wished | newest
-  getRankings(type = 'most_owned', limit = 10) {
-    return api.get(`${BASE}/rankings`, { params: { type, limit } })
-  },
-
   // Géneros disponibles con conteo
   getGenres() {
     return api.get(`${BASE}/genres`)
