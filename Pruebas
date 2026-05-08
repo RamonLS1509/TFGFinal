@@ -8,7 +8,7 @@ npm run dev
 
 # Terminal 3 — Tests backend
 cd steam-backend
-php artisan test --testdox
+php artisan test tests/Features
 
 # Terminal 4 — Tests frontend
 cd steam-frontend

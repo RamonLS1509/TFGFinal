@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-
+use \Illuminate\Database\Eloquent\Relations\HasMany;
+use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Game extends Model
 {
     use HasFactory;
@@ -18,7 +19,6 @@ class Game extends Model
         'publisher',
         'price',
         'cover_image',
-        'header_image',
         'screenshots',
         'genres',
         'platforms',
@@ -51,14 +51,14 @@ class Game extends Model
         });
     }
 
-    public function owners(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function owners(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'libraries')
                     ->withPivot('purchased_at', 'price_paid', 'hours_played')
                     ->withTimestamps();
     }
 
-    public function wishedBy(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function wishedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'wishlists')
                     ->withPivot('priority')
@@ -75,7 +75,7 @@ class Game extends Model
         return $query->whereJsonContains('genres', $genre);
     }
 
-    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function reviews(): HasMany
 {
     return $this->hasMany(Review::class);
 }

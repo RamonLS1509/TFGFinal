@@ -57,16 +57,15 @@
 🔌 API
 | ID     | Caso de prueba   | Pasos                 | Resultado esperado               |
 | ------ | ---------------- | --------------------- | -------------------------------- |
-| TC-026 | Ver estadísticas | Acceder a API → Stats | Se muestran usuarios registrados |
-| TC-027 | Búsqueda         | Usar buscador         | Resultados correctos             |
-| TC-028 | Documentación    | Acceder a Docs        | Se muestran endpoints            |
+| TC-026 | Búsqueda         | Usar buscador         | Resultados correctos de videojuegos           |
+| TC-027 | Documentación    | Acceder a Docs        | Se muestran endpoints            |
 🎮 Administración de juegos
 | ID     | Caso de prueba | Pasos            | Resultado esperado |
 | ------ | -------------- | ---------------- | ------------------ |
-| TC-029 | Crear juego    | Introducir datos | Juego creado       |
-| TC-030 | Editar juego   | Modificar juego  | Cambios guardados  |
-| TC-031 | Eliminar juego | Eliminar juego   | Juego eliminado    |
+| TC-028 | Crear juego    | Introducir datos | Juego creado       |
+| TC-029 | Editar juego   | Modificar juego  | Cambios guardados  |
+| TC-030 | Eliminar juego | Eliminar juego   | Juego eliminado    |
 👥 Gestión de usuarios
 | ID     | Caso de prueba   | Pasos                        | Resultado esperado |
 | ------ | ---------------- | ---------------------------- | ------------------ |
-| TC-032 | Eliminar usuario | Eliminar usuario desde panel | Usuario eliminado  |
+| TC-031 | Eliminar usuario | Eliminar usuario desde panel | Usuario eliminado  |

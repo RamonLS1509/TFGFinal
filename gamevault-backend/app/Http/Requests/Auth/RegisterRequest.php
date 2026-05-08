@@ -23,7 +23,6 @@ class RegisterRequest extends FormRequest
                     ->mixedCase()
                     ->numbers()
                     ->symbols()
-                    ->uncompromised(),
             ],
         ];
     }
@@ -36,7 +35,6 @@ class RegisterRequest extends FormRequest
             'password.mixed_case'  => 'La contraseña debe contener mayúsculas y minúsculas.',
             'password.numbers'     => 'La contraseña debe contener al menos un número.',
             'password.symbols'     => 'La contraseña debe contener al menos un símbolo (!@#$%...).',
-            'password.uncompromised' => 'Esta contraseña ha sido comprometida en filtraciones de datos. Elige otra.',
             'password.confirmed'   => 'Las contraseñas no coinciden.',
         ];
     }

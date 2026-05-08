@@ -20,7 +20,6 @@ class StoreGameRequest extends FormRequest
             'publisher'       => ['required', 'string', 'max:100'],
             'price'           => ['required', 'numeric', 'min:0'],
             'cover_image'     => ['nullable', 'url'],
-            'header_image'    => ['nullable', 'url'],
             'genres'          => ['required', 'array', 'min:1'],
             'genres.*'        => ['string'],
             'platforms'       => ['required', 'array', 'min:1'],

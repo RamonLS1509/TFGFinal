@@ -2,7 +2,7 @@
   <div class="min-h-[80vh] flex items-center justify-center px-4">
     <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-8">
       <h1 class="text-2xl font-bold mb-1">Iniciar sesión</h1>
-      <p class="text-gray-500 text-sm mb-6">Bienvenido de nuevo a SteamClone</p>
+      <p class="text-gray-500 text-sm mb-6">Bienvenido de nuevo a GameVault</p>
 
       <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
         <BaseInput

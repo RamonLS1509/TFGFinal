@@ -20,7 +20,6 @@ class UpdateGameRequest extends FormRequest
             'publisher'       => ['sometimes', 'string', 'max:100'],
             'price'           => ['sometimes', 'numeric', 'min:0'],
             'cover_image'     => ['nullable', 'url'],
-            'header_image'    => ['nullable', 'url'],
             'genres'          => ['sometimes', 'array', 'min:1'],
             'platforms'       => ['sometimes', 'array', 'min:1'],
             'release_date'    => ['sometimes', 'date'],

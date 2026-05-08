@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('publisher');
             $table->decimal('price', 8, 2);
             $table->string('cover_image')->nullable();
-            $table->string('header_image')->nullable();
             $table->json('screenshots')->nullable();
             $table->json('genres');               // ['Action', 'RPG']
             $table->json('platforms');             // ['Windows', 'Mac']

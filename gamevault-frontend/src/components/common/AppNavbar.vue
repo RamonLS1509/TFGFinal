@@ -5,7 +5,7 @@
       <!-- Logo -->
       <RouterLink to="/" class="flex items-center gap-2 font-bold text-xl text-blue-400 flex-shrink-0">
         <span class="text-2xl">🎮</span>
-        <span>SteamClone</span>
+        <span>GameVault</span>
       </RouterLink>
 
       <!-- Nav links — escritorio -->
@@ -32,11 +32,11 @@
             </RouterLink>
             <RouterLink to="/admin/games" class="text-yellow-400 hover:text-yellow-300 transition-colors"
               active-class="text-yellow-300 font-medium">
-              Admin
+              Panel de Juegos
             </RouterLink>
             <RouterLink to="/admin/users" class="text-yellow-400 hover:text-yellow-300 transition-colors"
               active-class="text-yellow-300 font-medium">
-              Usuarios
+              Panel de Usuarios
             </RouterLink>
           </template>
         </template>

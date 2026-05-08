@@ -1,4 +1,4 @@
-# SteamClone — Frontend
+# GameVault — Frontend
 
 SPA desarrollada con **Vue 3** + **Vite** + **Pinia** + **Tailwind CSS** como parte del Trabajo Fin de Máster del Máster en Full Stack Developer.
 

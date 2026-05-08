@@ -6,17 +6,14 @@
       <div class="flex items-center gap-3 mb-2">
         <span class="text-3xl">⚡</span>
         <h1 class="text-3xl font-bold">GameVault Public API</h1>
-        <span class="text-xs bg-blue-900/50 text-blue-300 border border-blue-800 rounded-full px-3 py-1">v1</span>
       </div>
-      <p class="text-gray-400 text-lg">API pública de SteamClone. Sin autenticación requerida.</p>
-      <p class="text-gray-500 text-sm mt-1">
-        Base URL: <code class="text-blue-400 bg-gray-800 px-2 py-0.5 rounded">http://localhost:8000/api/v1</code>
-      </p>
+
+
     </div>
 
     <!-- Tabs -->
     <div class="flex gap-2 mb-8 flex-wrap">
-      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="activeTab === tab.id
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="activeTab === 'tab.id'
         ? 'bg-blue-600 text-white'
         : 'bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700'"
         class="px-4 py-2 rounded-lg text-sm font-medium transition-colors">
@@ -24,105 +21,17 @@
       </button>
     </div>
 
-    <!-- STATS TAB -->
-    <div v-if="activeTab === 'stats'">
-      <div class="bg-gray-900 rounded-xl border border-gray-800 p-6 mb-6">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h2 class="text-xl font-bold">GET /stats</h2>
-            <p class="text-gray-400 text-sm mt-1">Estadísticas globales de la plataforma</p>
-          </div>
-        </div>
-        <code class="block text-xs text-gray-500 bg-gray-800 rounded px-3 py-2">
-          GET http://localhost:8000/api/v1/stats
-        </code>
-      </div>
 
-      <div v-if="stats" class="flex flex-col gap-6">
 
-        <!-- Usuarios registrados -->
-        <div class="bg-gray-900 rounded-xl border border-gray-800 p-6">
-          <h3 class="text-sm font-medium text-gray-400 mb-4 uppercase tracking-wider">Usuarios registrados</h3>
-          <div class="flex items-center gap-4">
-            <div
-              class="w-16 h-16 rounded-full bg-blue-900/50 border border-blue-800 flex items-center justify-center text-2xl">
-              👥
-            </div>
-            <div>
-              <p class="text-4xl font-bold text-blue-400">{{ stats.platform.total_users }}</p>
-              <p class="text-sm text-gray-500 mt-1">usuarios registrados en la plataforma</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- JSON raw -->
-        <div class="bg-gray-950 rounded-xl border border-gray-800 p-4">
-          <p class="text-xs text-gray-500 mb-2">Usuarios registrados en la plataforma</p>
-
-          <LoadingSpinner v-if="loadingUsers" />
-
-          <div v-else-if="usersData" class="flex flex-col gap-2">
-            <div v-for="user in usersData.data" :key="user.id"
-              class="flex items-center gap-3 p-3 bg-gray-900 rounded-lg border border-gray-800">
-
-              <!-- Avatar -->
-              <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0"
-                :class="user.role === 'admin' ? 'bg-yellow-600' : 'bg-blue-600'">
-                {{ user.name.charAt(0).toUpperCase() }}
-              </div>
-
-              <!-- Info -->
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <p class="font-medium text-sm">{{ user.name }}</p>
-                  <span :class="user.role === 'admin'
-                    ? 'bg-yellow-900/50 text-yellow-400 border-yellow-800'
-                    : 'bg-gray-800 text-gray-400 border-gray-700'" class="text-xs border rounded-full px-2 py-0.5">
-                    {{ user.role === 'admin' ? '★ Admin' : 'Usuario' }}
-                  </span>
-                </div>
-                <p class="text-gray-500 text-xs">@{{ user.username }} · {{ user.email }}</p>
-              </div>
-
-              <!-- Stats -->
-              <div class="hidden sm:flex items-center gap-4 text-xs text-gray-500 flex-shrink-0">
-                <div class="text-center">
-                  <p class="text-blue-400 font-bold text-sm">{{ user.library_count }}</p>
-                  <p>juegos</p>
-                </div>
-                <div class="text-center">
-                  <p class="text-pink-400 font-bold text-sm">{{ user.wishlist_count }}</p>
-                  <p>wishlist</p>
-                </div>
-                <div class="text-center">
-                  <p class="text-green-400 font-bold text-sm">{{ user.reviews_count }}</p>
-                  <p>reseñas</p>
-                </div>
-              </div>
-
-              <!-- Fecha registro -->
-              <div class="hidden md:block text-xs text-gray-600 flex-shrink-0 text-right">
-                <p>Registrado</p>
-                <p>{{ new Date(user.created_at).toLocaleDateString('es-ES') }}</p>
-              </div>
-            </div>
-
-            <p class="text-xs text-gray-600 text-right mt-1">
-              Total: {{ usersData.total }} usuario(s)
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- SEARCH TAB -->
     <div v-if="activeTab === 'search'">
       <div class="bg-gray-900 rounded-xl border border-gray-800 p-6 mb-6">
         <h2 class="text-xl font-bold mb-1">GET /search</h2>
-        <p class="text-gray-400 text-sm mb-4">Búsqueda avanzada — puedes buscar por cualquier campo</p>
+        <p class="text-gray-400 text-sm mb-4">Búsqueda avanzada que devuelve los juegos que existen </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          <BaseInput v-model="searchQuery" label="Búsqueda (q)" placeholder="Elden Ring, FromSoftware..." />
+          <BaseInput v-model="searchQuery" label="Título" placeholder="Elden Ring, FromSoftware..." />
           <BaseInput v-model="searchFilters.genre" label="Género" placeholder="RPG" />
           <BaseInput v-model="searchFilters.platform" label="Plataforma" placeholder="Windows" />
           <BaseInput v-model="searchFilters.min_price" label="Precio mínimo" type="number" placeholder="0" />
@@ -132,7 +41,7 @@
 
         <!-- Info de campos buscables -->
         <div class="bg-gray-800 rounded-lg p-3 mb-4">
-          <p class="text-xs text-gray-400 mb-2 font-medium">El campo <code class="text-blue-400">q</code> busca en todos
+          <p class="text-xs text-gray-400 mb-2 font-medium">El campo Título busca en todos
             estos campos a la vez:</p>
           <div class="flex flex-wrap gap-2">
             <span v-for="field in searchableFields" :key="field"
@@ -197,8 +106,8 @@
                 <code class="text-yellow-400 w-32 flex-shrink-0">{{ param.name }}</code>
                 <span class="text-gray-500 text-xs w-16 flex-shrink-0">{{ param.type }}</span>
                 <span class="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
-                  :class="param.required ? 'bg-red-900/50 text-red-400' : 'bg-gray-700 text-gray-400'">
-                  {{ param.required ? 'requerido' : 'opcional' }}
+                  :class="'bg-red-500 text-red-100'">
+                  {{'obligatorio' }}
                 </span>
                 <span class="text-gray-400 text-xs">{{ param.description }}</span>
               </div>
@@ -241,7 +150,6 @@ async function loadUsers() {
 
 const activeTab = ref('stats')
 const tabs = [
-  { id: 'stats', label: '📊 Stats' },
   { id: 'search', label: '🔍 Search' },
   { id: 'docs', label: '📄 Docs' },
 ]

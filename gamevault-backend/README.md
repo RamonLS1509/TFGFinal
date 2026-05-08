@@ -1,4 +1,4 @@
-# SteamClone — Backend
+# GameVault — Backend
 
 API REST desarrollada con **Laravel 11** + **MySQL** + **Laravel Sanctum** como parte del Trabajo Fin de Máster del Máster en Full Stack Developer.
 

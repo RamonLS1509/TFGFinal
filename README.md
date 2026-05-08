@@ -1,10 +1,10 @@
-# SteamClone — Trabajo Fin de Máster
+# GameVault — Trabajo Fin de Máster
 
 Aplicación web Full Stack inspirada en Steam, desarrollada como TFM del Máster en Full Stack Developer.
 
 ## Descripción
 
-SteamClone permite a los usuarios explorar un catálogo de videojuegos, gestionar su biblioteca personal de juegos adquiridos y mantener una lista de deseos. Los administradores pueden gestionar el catálogo completo.
+GameVault permite a los usuarios explorar un catálogo de videojuegos, gestionar su biblioteca personal de juegos adquiridos y mantener una lista de deseos. Los administradores pueden gestionar el catálogo completo.
 
 ## Stack tecnológico
 

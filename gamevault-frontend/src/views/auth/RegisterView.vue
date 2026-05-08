@@ -2,7 +2,7 @@
   <div class="min-h-[80vh] flex items-center justify-center px-4">
     <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-8">
       <h1 class="text-2xl font-bold mb-1">Crear cuenta</h1>
-      <p class="text-gray-500 text-sm mb-6">Únete a SteamClone hoy</p>
+      <p class="text-gray-500 text-sm mb-6">Únete a GameVault hoy</p>
 
       <form @submit.prevent="handleRegister" class="flex flex-col gap-4">
         <BaseInput id="name"     label="Nombre completo"   v-model="form.name"     :error="errors.name"     placeholder="Tu nombre" />

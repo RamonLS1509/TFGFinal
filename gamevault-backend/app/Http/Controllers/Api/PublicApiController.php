@@ -203,7 +203,6 @@ class PublicApiController extends Controller
                 'publisher' => $game->publisher,
                 'price' => $game->price,
                 'cover_image' => $game->cover_image,
-                'header_image' => $game->header_image,
                 'genres' => $game->genres,
                 'platforms' => $game->platforms,
                 'release_date' => $game->release_date,

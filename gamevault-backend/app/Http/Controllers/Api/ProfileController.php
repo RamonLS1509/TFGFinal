@@ -60,7 +60,6 @@ class ProfileController extends Controller
                 ->mixedCase()
                 ->numbers()
                 ->symbols()
-                ->uncompromised(),
         ],
     ], [
         'current_password.current_password' => 'La contraseña actual no es correcta.',
@@ -69,7 +68,6 @@ class ProfileController extends Controller
         'password.mixed_case'    => 'La contraseña debe contener mayúsculas y minúsculas.',
         'password.numbers'       => 'La contraseña debe contener al menos un número.',
         'password.symbols'       => 'La contraseña debe contener al menos un símbolo (!@#$%...).',
-        'password.uncompromised' => 'Esta contraseña ha sido comprometida en filtraciones de datos. Elige otra.',
         'password.confirmed'     => 'Las contraseñas no coinciden.',
     ]);
 
