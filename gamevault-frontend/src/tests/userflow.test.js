@@ -7,6 +7,7 @@ import { useWishlistStore } from '@/stores/wishlist'
 import { useReviewsStore }  from '@/stores/reviews'
 import api from '@/services/api'
 
+// ── TC-001 a TC-004: Usuario sin sesión ───────────────────────────────────────
 describe('TC-001 a TC-004 — Usuario sin sesión', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -32,6 +33,7 @@ describe('TC-001 a TC-004 — Usuario sin sesión', () => {
   })
 })
 
+// ── TC-005 a TC-008: Auth ─────────────────────────────────────────────────────
 describe('TC-005 a TC-008 — Auth: registro y login', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -45,8 +47,10 @@ describe('TC-005 a TC-008 — Auth: registro y login', () => {
 
     const auth = useAuthStore()
     await auth.register({
-      name: 'Test', username: 'test',
-      email: 'test@test.com', password: 'Password1!',
+      name: 'Test',
+      username: 'test',
+      email: 'test@test.com',
+      password: 'Password1!',
       password_confirmation: 'Password1!',
     })
 
@@ -75,7 +79,9 @@ describe('TC-005 a TC-008 — Auth: registro y login', () => {
     const auth = useAuthStore()
     try {
       await auth.login({ email: 'wrong@test.com', password: 'wrong' })
-    } catch {}
+    } catch (_) {
+      // error esperado
+    }
 
     expect(auth.user).toBeNull()
     expect(auth.isAuthenticated).toBe(false)
@@ -89,9 +95,9 @@ describe('TC-005 a TC-008 — Auth: registro y login', () => {
     const library  = useLibraryStore()
     const wishlist = useWishlistStore()
 
-    auth.user          = { id: 1, name: 'Test', role: 'user' }
-    library.entries    = [{ id: 1, game_id: 10 }]
-    wishlist.items     = [{ id: 1, game_id: 20 }]
+    auth.user       = { id: 1, name: 'Test', role: 'user' }
+    library.entries = [{ id: 1, game_id: 10 }]
+    wishlist.items  = [{ id: 1, game_id: 20 }]
 
     await auth.logout()
 
@@ -102,6 +108,7 @@ describe('TC-005 a TC-008 — Auth: registro y login', () => {
   })
 })
 
+// ── TC-015 a TC-016: Biblioteca ───────────────────────────────────────────────
 describe('TC-015 a TC-016 — Biblioteca', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -119,7 +126,7 @@ describe('TC-015 a TC-016 — Biblioteca', () => {
     expect(library.ownsGame(5)).toBe(true)
   })
 
-  it('TC-016: ownsGame devuelve false para juego no comprado', () => {
+  it('TC-016: ownsGame devuelve true para juego comprado', () => {
     const library = useLibraryStore()
     library.entries = [{ id: 1, game_id: 5 }]
 
@@ -131,7 +138,10 @@ describe('TC-015 a TC-016 — Biblioteca', () => {
     api.delete = vi.fn().mockResolvedValue({})
 
     const library = useLibraryStore()
-    library.entries = [{ id: 1, game_id: 5 }, { id: 2, game_id: 10 }]
+    library.entries = [
+      { id: 1, game_id: 5 },
+      { id: 2, game_id: 10 },
+    ]
 
     await library.removeFromLibrary(1)
 
@@ -140,6 +150,7 @@ describe('TC-015 a TC-016 — Biblioteca', () => {
   })
 })
 
+// ── TC-018 a TC-021: Wishlist ─────────────────────────────────────────────────
 describe('TC-018 a TC-021 — Wishlist', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -197,6 +208,7 @@ describe('TC-018 a TC-021 — Wishlist', () => {
   })
 })
 
+// ── TC-010 a TC-013: Reseñas ──────────────────────────────────────────────────
 describe('TC-010 a TC-013 — Reseñas', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -208,7 +220,10 @@ describe('TC-010 a TC-013 — Reseñas', () => {
     api.post = vi.fn().mockResolvedValue({ data: newReview })
 
     const reviews = useReviewsStore()
-    await reviews.createReview({ game_id: 3, score: 9, title: 'Excelente', body: 'Muy bueno', recommended: true })
+    await reviews.createReview({
+      game_id: 3, score: 9,
+      title: 'Excelente', body: 'Muy bueno', recommended: true,
+    })
 
     expect(reviews.myReview).toEqual(newReview)
     expect(reviews.reviews).toHaveLength(1)
@@ -242,6 +257,7 @@ describe('TC-010 a TC-013 — Reseñas', () => {
   })
 })
 
+// ── TC-022 a TC-024: Perfil ───────────────────────────────────────────────────
 describe('TC-022 a TC-024 — Perfil', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -249,7 +265,10 @@ describe('TC-022 a TC-024 — Perfil', () => {
   })
 
   it('TC-023: updateProfile actualiza el usuario en el store', async () => {
-    const updatedUser = { id: 1, name: 'Nuevo Nombre', username: 'test', email: 'test@test.com', role: 'user' }
+    const updatedUser = {
+      id: 1, name: 'Nuevo Nombre',
+      username: 'test', email: 'test@test.com', role: 'user',
+    }
     api.put = vi.fn().mockResolvedValue({ data: { user: updatedUser, message: 'ok' } })
 
     const auth = useAuthStore()

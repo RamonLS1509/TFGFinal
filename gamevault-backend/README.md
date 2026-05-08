@@ -22,7 +22,7 @@ API REST desarrollada con **Laravel 11** + **MySQL** + **Laravel Sanctum** como 
 ```bash
 # 1. Clonar el repositorio
 git clone <repo-url>
-cd steam-backend
+cd gamevault-backend
 
 # 2. Instalar dependencias
 composer install
@@ -35,7 +35,7 @@ cp .env.example .env
 php artisan key:generate
 
 # 5. Crear la base de datos
-mysql -u root -p -e "CREATE DATABASE steam_clone CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p -e "CREATE DATABASE gamevault CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
 # 6. Ejecutar migraciones y seeders
 php artisan migrate --seed
@@ -61,7 +61,7 @@ El servidor quedará disponible en `http://localhost:8000`.
 | Rol | Email | Contraseña |
 |---|---|---|
 | Admin | admin@steam.test | password |
-| Usuario | user@steam.test | password |
+
 
 ## Recursos implementados
 
