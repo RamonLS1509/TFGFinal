@@ -1,3 +1,4 @@
+<!--Gestiona la presentación y comportamiento base de todos los campos de texto de la aplicación-->
 <template>
   <div class="flex flex-col gap-1">
     <label v-if="label" :for="id" class="text-sm text-gray-400">{{ label }}</label>

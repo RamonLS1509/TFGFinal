@@ -3,10 +3,12 @@ import { ref } from 'vue'
 import api from '@/services/api'
 import { useToast } from '@/composables/useToast'
 
+//Gestiona el estado global de la wishlist del usuario
 export const useWishlistStore = defineStore('wishlist', () => {
   const items = ref([])
   const loading = ref(false)
 
+  //Obtiene del backend todos los juegos de la wishlist del usuario y los guarda en items
   async function fetchWishlist() {
     loading.value = true
     try {
@@ -17,6 +19,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
     }
   }
 
+  //Añade un juego a la wishlist lo inserta al principio del array para que aparezca inmediatamente en la vista
   async function addToWishlist(gameId, priority = 0) {
     const toast = useToast()
     const { data } = await api.post('/api/wishlist', { game_id: gameId, priority })
@@ -25,6 +28,7 @@ export const useWishlistStore = defineStore('wishlist', () => {
     return data
   }
 
+  //Elimina un juego de la wishlist tanto en el backend como del array filtrando por id
   async function removeFromWishlist(wishlistId) {
     const toast = useToast()
     await api.delete(`/api/wishlist/${wishlistId}`)
@@ -32,10 +36,12 @@ export const useWishlistStore = defineStore('wishlist', () => {
     toast.success('Juego eliminado de la wishlist.')
   }
 
+  //Comprueba si un juego concreto está en la wishlist del usuario
   function hasGame(gameId) {
     return items.value.some(i => i.game_id === gameId)
   }
 
+  //Devuelve la entrada completa de la wishlist de un juego concreto
   function getEntry(gameId) {
     return items.value.find(i => i.game_id === gameId)
   }

@@ -8,8 +8,10 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Library;
 
+//Gestiona todo lo relacionado con la lista de deseos de cada usuario.
 class WishlistController extends Controller
 {
+    //Devuelve todos los juegos que el usuario tiene en su wishlist
     public function index(Request $request): JsonResponse
     {
         $wishlist = $request->user()
@@ -22,41 +24,43 @@ class WishlistController extends Controller
         return response()->json($wishlist);
     }
 
+    //Añade un juego a la wishlist
     public function store(Request $request): JsonResponse
-{
-    $request->validate([
-        'game_id'  => ['required', 'exists:games,id'],
-        'priority' => ['sometimes', 'integer', 'min:0', 'max:1'],
-    ]);
+    {
+        $request->validate([
+            'game_id' => ['required', 'exists:games,id'],
+            'priority' => ['sometimes', 'integer', 'min:0', 'max:1'],
+        ]);
 
-    // No se puede añadir a wishlist si ya está en biblioteca
-    $inLibrary = Library::where('user_id', $request->user()->id)
-                                     ->where('game_id', $request->game_id)
-                                     ->exists();
+        // No se puede añadir a wishlist si ya está en biblioteca
+        $inLibrary = Library::where('user_id', $request->user()->id)
+            ->where('game_id', $request->game_id)
+            ->exists();
 
-    if ($inLibrary) {
-        return response()->json([
-            'message' => 'Este juego ya está en tu biblioteca.',
-        ], 409);
+        if ($inLibrary) {
+            return response()->json([
+                'message' => 'Este juego ya está en tu biblioteca.',
+            ], 409);
+        }
+
+        $exists = Wishlist::where('user_id', $request->user()->id)
+            ->where('game_id', $request->game_id)
+            ->exists();
+
+        if ($exists) {
+            return response()->json(['message' => 'El juego ya está en tu lista de deseos.'], 409);
+        }
+
+        $entry = Wishlist::create([
+            'user_id' => $request->user()->id,
+            'game_id' => $request->game_id,
+            'priority' => $request->priority ?? 0,
+        ]);
+
+        return response()->json($entry->load('game'), 201);
     }
 
-    $exists = Wishlist::where('user_id', $request->user()->id)
-                       ->where('game_id', $request->game_id)
-                       ->exists();
-
-    if ($exists) {
-        return response()->json(['message' => 'El juego ya está en tu lista de deseos.'], 409);
-    }
-
-    $entry = Wishlist::create([
-        'user_id'  => $request->user()->id,
-        'game_id'  => $request->game_id,
-        'priority' => $request->priority ?? 0,
-    ]);
-
-    return response()->json($entry->load('game'), 201);
-}
-
+    //Permite al usuario cambiar la prioridad de un juego de su wishlist
     public function update(Request $request, Wishlist $wishlist): JsonResponse
     {
         if ($request->user()->id !== $wishlist->user_id) {
@@ -72,6 +76,7 @@ class WishlistController extends Controller
         return response()->json($wishlist->fresh()->load('game'));
     }
 
+    //Elimina un juego de la wishlist
     public function destroy(Request $request, Wishlist $wishlist): JsonResponse
     {
         if ($request->user()->id !== $wishlist->user_id) {

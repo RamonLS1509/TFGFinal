@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class IsAdmin
 {
-    public function handle(Request $request, Closure $next)
+//Se encarga de proteger las rutas exclusivas de administrador
+public function handle(Request $request, Closure $next)
     {
         if (! $request->user()?->isAdmin()) {
             return response()->json(['message' => 'Acceso denegado.'], 403);

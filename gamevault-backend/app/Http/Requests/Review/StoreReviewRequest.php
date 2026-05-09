@@ -4,6 +4,7 @@ namespace App\Http\Requests\Review;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+//Gestiona la validación de la creación de reseñas
 class StoreReviewRequest extends FormRequest
 {
     public function authorize(): bool

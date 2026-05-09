@@ -10,9 +10,10 @@ use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+//Gestiona todo el ciclo de vida de las reseñas que los usuarios escriben sobre los juegos de la plataforma
 class ReviewController extends Controller
 {
-    // Público: reseñas de un juego
+    // Gestiona la visualización de todas las reseñas de un juego
     public function index(Request $request, Game $game): JsonResponse
     {
         $page = (int) $request->input('page', 1);
@@ -43,7 +44,7 @@ class ReviewController extends Controller
         ]);
     }
 
-    // Privado: crear reseña
+    // Gestiona que un usuario autenticado pueda escribir su reseña sobre un juego
     public function store(StoreReviewRequest $request): JsonResponse
     {
         $exists = Review::where('user_id', $request->user()->id)
@@ -68,7 +69,7 @@ class ReviewController extends Controller
         return response()->json($review->load('user:id,name,username,avatar'), 201);
     }
 
-    // Privado: actualizar reseña propia
+    // Gestiona que un usuario pueda modificar sus propias reseñas
     public function update(UpdateReviewRequest $request, Review $review): JsonResponse
     {
         $review->update($request->validated());
@@ -76,7 +77,7 @@ class ReviewController extends Controller
         return response()->json($review->fresh()->load('user:id,name,username,avatar'));
     }
 
-    // Privado: eliminar reseña propia
+    // Gestiona que un usuario pueda borrar sus propias reseñas
     public function destroy(Request $request, Review $review): JsonResponse
     {
         if ($request->user()->id !== $review->user_id && !$request->user()->isAdmin()) {
@@ -89,18 +90,18 @@ class ReviewController extends Controller
     }
 
 
-    // Público: reseña de un usuario concreto para un juego
+    // Gestiona la consulta de si el usuario autenticado ya ha esrito una reseña sobre un juego concreto.
     public function userReview(Request $request, Game $game): JsonResponse
-{
-    if (!$request->user()) {
-        return response()->json(null);
+    {
+        if (!$request->user()) {
+            return response()->json(null);
+        }
+
+        $review = Review::where('user_id', $request->user()->id)
+            ->where('game_id', $game->id)
+            ->first();
+
+        // first() devuelve null si no existe, nunca lanza 404
+        return response()->json($review);
     }
-
-    $review = Review::where('user_id', $request->user()->id)
-                    ->where('game_id', $game->id)
-                    ->first();
-
-    // first() devuelve null si no existe, nunca lanza 404
-    return response()->json($review);
-}
 }

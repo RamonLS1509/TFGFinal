@@ -5,6 +5,7 @@ namespace App\Http\Requests\Profile;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+//Gestiona la validación de la edición del perfil de usuario
 class UpdateProfileRequest extends FormRequest
 {
     public function authorize(): bool

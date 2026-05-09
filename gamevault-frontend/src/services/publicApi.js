@@ -1,5 +1,6 @@
 import api from './api'
 
+//Gestiona el acceso a los endpoints de la API desde el frontend
 const BASE = '/api/v1'
 
 export const publicApi = {

@@ -5,6 +5,7 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
+//Se encarga de validar los datos del formulario de registro de nuevos usuarios
 class RegisterRequest extends FormRequest
 {
     public function authorize(): bool { return true; }

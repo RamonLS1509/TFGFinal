@@ -1,3 +1,4 @@
+<!--Gestiona la seccion completa de reseña de la comunidad dentro de la pagina de detalle de un juego-->
 <template>
   <div class="mt-10">
     <h2 class="text-2xl font-bold mb-6">Reseñas de la comunidad</h2>
@@ -47,7 +48,7 @@
       <div v-if="reviewsStore.myReview && reviewsStore.myReview.id && !editing"
         class="bg-blue-950/30 border border-blue-800/50 rounded-xl p-5 mb-4">
         <div class="flex items-start justify-between gap-4">
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="flex items-center gap-2 mb-1">
               <span class="text-xs text-blue-400 font-medium">Tu reseña</span>
               <span class="text-gray-500 text-xs">{{ reviewsStore.myReview.score }}/10</span>
@@ -233,24 +234,26 @@ const form = ref({
   recommended: true,
 })
 
+//Calcula el porcentaje de usuarios que recomiendan el juego
 const recommendedPercent = computed(() => {
   if (!reviewsStore.stats?.total) return 0
   return Math.round((reviewsStore.stats.recommended / reviewsStore.stats.total) * 100)
 })
-
+//Calcula el ancho de cada barra de distribución de puntuaciones
 function barWidth(score) {
   if (!reviewsStore.stats?.total) return 0
   const dist = reviewsStore.stats.distribution || {}
   const count = Number(dist[score] || 0)
   return Math.round((count / reviewsStore.stats.total) * 100)
 }
-
+//Asigna color verde, amarillo o rojo a la puntuación según su valor
 function scoreColor(score) {
   if (score >= 8) return 'text-green-400'
   if (score >= 5) return 'text-yellow-400'
   return 'text-red-400'
 }
 
+//Rellena el formulario con los datos de la reseña existente y activa el modo edición
 function startEdit() {
   const r = reviewsStore.myReview
   if (!r) return
@@ -263,12 +266,14 @@ function startEdit() {
   editing.value = true
 }
 
+//Cancela la edición limpiando errores y desactivando el modo edición
 function cancelEdit() {
   editing.value = false
   errors.value = {}
   serverError.value = ''
 }
 
+//gestiona tanto la creación como la edición de la reseña, manejando errores de validación 422 y errores generales del servidor.
 async function handleSubmit() {
   errors.value = {}
   serverError.value = ''
@@ -294,6 +299,7 @@ async function handleSubmit() {
   }
 }
 
+//Pide confirmación y elimina la reseña propia del usuario
 async function handleDelete() {
   const reviewId = reviewsStore.myReview?.id
   if (!reviewId) return
@@ -306,12 +312,14 @@ async function handleDelete() {
   }
 }
 
+//Permite al administrador eliminar cualquier reseña ajena con confirmación
 async function handleAdminDelete(reviewId) {
   if (!reviewId) return
   if (!confirm('¿Eliminar esta reseña?')) return
   await reviewsStore.deleteReview(reviewId)
 }
 
+//Cuando el componente se carga, si el usuario está autenticado busca automaticamente su reseña para ese juego
 onMounted(async () => {
   if (auth.isAuthenticated) {
     await reviewsStore.fetchMyReview(props.gameId)

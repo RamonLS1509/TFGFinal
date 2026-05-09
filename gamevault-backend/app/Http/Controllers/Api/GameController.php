@@ -9,9 +9,10 @@ use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+//Gestiona todo lo relacionado con los juegos.
 class GameController extends Controller
 {
-    // Público: listado con filtros y paginación
+    // Devuelve el listado paginado de juegos activos con filtros opcionales
     public function index(Request $request): JsonResponse
     {
         $query = Game::active();
@@ -41,13 +42,13 @@ class GameController extends Controller
         return response()->json($games);
     }
 
-    // Público: detalle de un juego
+    // Devuelve el detalle completo de un juego por su ID
     public function show(Game $game): JsonResponse
     {
         return response()->json($game);
     }
 
-    // Admin: crear juego
+    // Crea un nuevo juego en la BBDD
     public function store(StoreGameRequest $request): JsonResponse
     {
         $game = Game::create($request->validated());
@@ -55,7 +56,7 @@ class GameController extends Controller
         return response()->json($game, 201);
     }
 
-    // Admin: actualizar juego
+    // Actualiza los datos de un juego existente
     public function update(UpdateGameRequest $request, Game $game): JsonResponse
     {
         $game->update($request->validated());
@@ -63,7 +64,7 @@ class GameController extends Controller
         return response()->json($game);
     }
 
-    // Admin: eliminar juego
+    // Admin: Elimina un juego de la BBDD
     public function destroy(Game $game): JsonResponse
     {
         $game->delete();
@@ -71,7 +72,7 @@ class GameController extends Controller
         return response()->json(['message' => 'Juego eliminado.'], 204);
     }
 
-    // Admin: listado completo (incluye inactivos)
+    // Devuelve el listado completo de juegos para el panel de control de juegos
     public function adminIndex(): JsonResponse
     {
         $games = Game::orderBy('created_at', 'desc')->paginate(20);

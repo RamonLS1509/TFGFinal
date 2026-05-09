@@ -1,3 +1,4 @@
+<!--Gestiona el sistema de notificaciones que aparecen abajo a la derecha-->
 <template>
   <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none">
     <TransitionGroup name="toast" tag="div" class="flex flex-col gap-2">

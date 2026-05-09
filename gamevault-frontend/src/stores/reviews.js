@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import api from '@/services/api'
 import { useToast } from '@/composables/useToast'
 
+//Gestiona el estado global de las reseñas de la aplicacion
 export const useReviewsStore = defineStore('reviews', () => {
   const reviews   = ref([])
   const stats     = ref(null)
@@ -11,6 +12,7 @@ export const useReviewsStore = defineStore('reviews', () => {
   const pagination = ref(null)
   const loading   = ref(false)
 
+  //Obtiene las reseñas y estadisticas de un juego concreto.
   async function fetchGameReviews(gameId, page = 1) {
     loading.value = true
     try {
@@ -27,6 +29,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     }
   }
 
+
   async function fetchMyReview(gameId) {
   try {
     const { data } = await api.get(`/api/games/${gameId}/reviews/mine`)
@@ -36,7 +39,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     myReview.value = null
   }
 }
-
+  //Obtiene la reseña del usuario para un juego concreto
   async function fetchMyReviews() {
     loading.value = true
     try {
@@ -47,6 +50,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     }
   }
 
+//Crea una reseña, la añade al principio del listado actual, actualiza las estadisticas incrementando el total y los recomendados si procede
   async function createReview(payload) {
     const toast = useToast()
     const { data } = await api.post('/api/reviews', payload)
@@ -60,6 +64,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     return data
   }
 
+  //Actualiza una reseña del backend y la reemplaza en el array buscandola por id
   async function updateReview(reviewId, payload) {
     const toast = useToast()
     const { data } = await api.put(`/api/reviews/${reviewId}`, payload)
@@ -70,6 +75,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     return data
   }
 
+  //Elimina una reseña, limpia myReview y decrementa el contador de estadisticas
   async function deleteReview(reviewId) {
     const toast = useToast()
     if (!reviewId) throw new Error('reviewId es undefined')
@@ -79,6 +85,7 @@ export const useReviewsStore = defineStore('reviews', () => {
     if (stats.value) stats.value.total--
     toast.success('Reseña eliminada.')
   }
+
 
   function reset() {
     reviews.value    = []

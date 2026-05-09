@@ -5,24 +5,10 @@
       <p class="text-gray-500 text-sm mb-6">Bienvenido de nuevo a GameVault</p>
 
       <form @submit.prevent="handleLogin" class="flex flex-col gap-4">
-        <BaseInput
-          id="email"
-          label="Email"
-          type="email"
-          v-model="form.email"
-          :error="errors.email"
-          placeholder="tu@email.com"
-          autocomplete="email"
-        />
-        <BaseInput
-          id="password"
-          label="Contraseña"
-          type="password"
-          v-model="form.password"
-          :error="errors.password"
-          placeholder="••••••••"
-          autocomplete="current-password"
-        />
+        <BaseInput id="email" label="Email" type="email" v-model="form.email" :error="errors.email"
+          placeholder="tu@email.com" autocomplete="email" />
+        <BaseInput id="password" label="Contraseña" type="password" v-model="form.password" :error="errors.password"
+          placeholder="••••••••" autocomplete="current-password" />
 
         <p v-if="serverError" class="text-red-400 text-sm bg-red-900/30 border border-red-800 rounded px-3 py-2">
           {{ serverError }}
@@ -49,8 +35,8 @@ import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 
 const router = useRouter()
-const route  = useRoute()
-const auth   = useAuthStore()
+const route = useRoute()
+const auth = useAuthStore()
 
 const form = ref({ email: '', password: '' })
 const errors = ref({})
@@ -72,7 +58,6 @@ async function handleLogin() {
     } else if (e.response?.status === 401) {
       serverError.value = 'Email o contraseña incorrectos.'
     }
-    // Los demás errores los gestiona el interceptor global
   } finally {
     loading.value = false
   }

@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name'     => 'Administrador',
             'username' => 'admin',
-            'email'    => 'admin@steam.test',
+            'email'    => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role'     => 'admin',
         ]);

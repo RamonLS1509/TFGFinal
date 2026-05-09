@@ -12,7 +12,7 @@
 
     <LoadingSpinner v-if="libraryStore.loading" />
 
-    <!-- Estado vacío elaborado -->
+
     <div v-else-if="libraryStore.entries.length === 0" class="py-12">
       <div class="max-w-md mx-auto text-center">
         <div class="relative w-32 h-32 mx-auto mb-6">
@@ -39,7 +39,6 @@
           </RouterLink>
         </div>
 
-        <!-- Sugerencias si hay juegos en wishlist -->
         <div v-if="wishlistStore.items.length > 0" class="bg-gray-900 rounded-xl border border-gray-800 p-5 text-left">
           <p class="text-sm font-medium text-gray-300 mb-3">
             Tienes {{ wishlistStore.items.length }} juego(s) en tu wishlist

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useToast } from '@/composables/useToast'
 
+//Gestiona la comunicación con el backend y el manejo global de errores HTTP
 const api = axios.create({
   baseURL: 'http://localhost:8000',
   withCredentials: true,

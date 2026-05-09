@@ -4,6 +4,7 @@ namespace App\Http\Requests\Game;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+//Gestiona la validación de la creación de juegos.
 class StoreGameRequest extends FormRequest
 {
     public function authorize(): bool

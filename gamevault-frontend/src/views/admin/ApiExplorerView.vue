@@ -133,7 +133,6 @@ import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import GameCard from '@/components/games/GameCard.vue'
 import api from '@/services/api'
-import LoadingSpinner from '@/components/common/LoadingSpinner.vue'
 
 const usersData = ref(null)
 const loadingUsers = ref(false)

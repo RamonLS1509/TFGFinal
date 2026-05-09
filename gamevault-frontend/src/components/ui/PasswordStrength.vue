@@ -1,3 +1,4 @@
+<!--Gestiona el feedback visual en tiempo real sobre la seguridad de la contraseña que está intentando crear-->
 <template>
   <div v-if="password" class="flex flex-col gap-2 mt-2">
     <!-- Barra de fuerza -->

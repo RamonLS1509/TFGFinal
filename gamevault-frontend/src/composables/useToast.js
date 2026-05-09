@@ -1,3 +1,4 @@
+//Gestiona el estado global de las notificaciones toast
 import { ref } from 'vue'
 
 const toasts = ref([])

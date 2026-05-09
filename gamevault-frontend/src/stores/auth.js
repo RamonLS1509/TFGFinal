@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import api from '@/services/api'
 import { useToast } from '@/composables/useToast'
 
+//Gestiona la identidad del usuario a lo largo de toda la aplicación, desde el registo y login hasta el logout
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const loading = ref(false)
@@ -11,10 +12,11 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!user.value)
   const isAdmin = computed(() => user.value?.role === 'admin')
 
+  //Obtiene la cookie CSRF de Laravel Sanctum
   async function fetchCsrfCookie() {
     await api.get('/sanctum/csrf-cookie')
   }
-
+//Obtiene la cookie CSRF, registra al usuario y guarda sus datos en el store
   async function register(payload) {
     const toast = useToast()
     await fetchCsrfCookie()
@@ -23,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
     toast.success(`¡Bienvenido, ${data.user.name}!`)
     return data
   }
-
+//Igual que register pero para iniciar sesion
   async function login(payload) {
     const toast = useToast()
     await fetchCsrfCookie()
@@ -33,6 +35,8 @@ export const useAuthStore = defineStore('auth', () => {
     return data
   }
 
+  //Cierra la sesion en el servidor y en caso de exito o fallo limpia al usuario y vacia los stores de biblioteca, wishlist y reseñas para que no queden
+  //datos privados de otro usuario en memoria.
   async function logout() {
     const toast = useToast()
 
@@ -64,6 +68,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  //Actualiza los datos del perfil y refresca el usuario en el store
   async function updateProfile(payload) {
     const toast = useToast()
     const { data } = await api.put('/api/profile', payload)
@@ -72,6 +77,7 @@ export const useAuthStore = defineStore('auth', () => {
     return data
   }
 
+  //Cambia la contraseña mostrando confirmación mediante toast
   async function changePassword(payload) {
     const toast = useToast()
     const { data } = await api.put('/api/profile/password', payload)
@@ -79,6 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
     return data
   }
 
+  //Comprueba si hay sesion activa consultando /api/me.
   async function fetchUser() {
     if (initialized.value) return
     loading.value = true

@@ -4,7 +4,7 @@ Aplicación web Full Stack inspirada en Steam, desarrollada como TFM del Máster
 
 ## Descripción
 
-GameVault permite a los usuarios explorar un catálogo de videojuegos, gestionar su biblioteca personal de juegos adquiridos y mantener una lista de deseos. Los administradores pueden gestionar el catálogo completo.
+GameVault permite a los usuarios explorar un catálogo de videojuegos, gestionar su biblioteca personal de juegos adquiridos y mantener una lista de deseos. Los administradores pueden gestionar el catálogo completo y banear a los usuarios.
 
 ## Stack tecnológico
 
@@ -36,4 +36,3 @@ Ver los README de cada carpeta:
 - Panel de administración: CRUD de juegos
 - Autenticación segura con cookies HttpOnly
 - Diseño responsive dark-mode
-- 24 tests en backend + 30 tests en frontend

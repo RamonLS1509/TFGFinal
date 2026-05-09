@@ -1,3 +1,4 @@
+<!--Componente común del Navbar-->
 <template>
   <nav class="bg-gray-900 border-b border-gray-800 sticky top-0 z-50 w-full">
     <div class="w-full max-w-screen-2xl mx-auto px-6 flex items-center justify-between h-16">

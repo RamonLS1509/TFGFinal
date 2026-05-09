@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
+//Gestiona la navegación y el control de acceso del frontend definiendo que vistas existen y asegurando que cada usuario solo pueda acceder a las rutas que le
+//corresponden
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

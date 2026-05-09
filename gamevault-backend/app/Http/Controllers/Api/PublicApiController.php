@@ -11,10 +11,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
+//Gestiona la información de la plataforma.
 class PublicApiController extends Controller
 {
-    // ── GET /api/v1/stats ────────────────────────────────────────────────────
-    // Estadísticas globales de la plataforma
+
+    //Devuelve estadísticas globales de la plataforma
     public function stats(): JsonResponse
     {
         $stats = Cache::remember('api.stats', 60, function () {
@@ -39,8 +40,7 @@ class PublicApiController extends Controller
         ]);
     }
 
-    // ── GET /api/v1/genres ───────────────────────────────────────────────────
-    // Lista todos los géneros disponibles con conteo de juegos
+//Recorre todos los juegos activos, extrae sus generos y cuenta cuantos juegos pertenecen a cada uno.
     public function genres(): JsonResponse
     {
         $genres = Cache::remember('api.genres', 300, function () {
@@ -68,8 +68,7 @@ class PublicApiController extends Controller
         ]);
     }
 
-    // ── GET /api/v1/platforms ────────────────────────────────────────────────
-    // Lista todas las plataformas con conteo de juegos
+//Recorre todos los juegos activos, extrae sus plataformas y cuenta cuantos juegos pertenecen a cada uno.
     public function platforms(): JsonResponse
     {
         $platforms = Cache::remember('api.platforms', 300, function () {
@@ -97,8 +96,7 @@ class PublicApiController extends Controller
         ]);
     }
 
-    // ── GET /api/v1/search ───────────────────────────────────────────────────
-    // Búsqueda avanzada de juegos
+//Busqueda avanzadad de juegos con varios filtros
     public function search(Request $request): JsonResponse
     {
         $request->validate([
@@ -183,8 +181,7 @@ class PublicApiController extends Controller
         ]);
     }
 
-    // ── GET /api/v1/game/{slug} ──────────────────────────────────────────────
-    // Detalle público de un juego por slug
+//Busca un juego concreto por el slug y lo devuelve
     public function gameBySlug(string $slug): JsonResponse
     {
         $game = Game::active()

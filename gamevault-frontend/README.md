@@ -37,5 +37,3 @@ La aplicación quedará disponible en `http://localhost:5173`.
 | `npm run build` | Build de producción |
 | `npm run preview` | Preview del build |
 | `npm run test:unit` | Ejecutar tests con Vitest |
-
-## Estructura del proyecto

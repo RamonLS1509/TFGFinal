@@ -11,11 +11,17 @@ class AdminFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Crea un usuario con rol de administrador.
+     */
     private function makeAdmin(): User
     {
         return User::factory()->create(['role' => 'admin']);
     }
 
+    /**
+     * Crea un juego con valores por defecto, permitiendo sobreescribir campos.
+     */
     private function makeGame(array $overrides = []): Game
     {
         return Game::create(array_merge([
@@ -33,6 +39,10 @@ class AdminFlowTest extends TestCase
 
     // ── TC-026: Búsqueda en API ───────────────────────────────────────────────
 
+    /**
+     * Verifica que la búsqueda por título devuelve únicamente
+     * el juego que coincide con la query.
+     */
     public function test_TC026_api_search_returns_correct_results(): void
     {
         $this->makeGame(['title' => 'Elden Ring']);
@@ -47,6 +57,9 @@ class AdminFlowTest extends TestCase
         $this->assertEquals('Elden Ring', $response->json('data.0.title'));
     }
 
+    /**
+     * Verifica que la búsqueda sin query devuelve todos los juegos disponibles.
+     */
     public function test_TC026_api_search_without_query_returns_all(): void
     {
         $this->makeGame();
@@ -58,6 +71,10 @@ class AdminFlowTest extends TestCase
         $this->assertGreaterThanOrEqual(2, $response->json('meta.results_count'));
     }
 
+    /**
+     * Verifica que el filtro por género devuelve solo los juegos
+     * que pertenecen a ese género.
+     */
     public function test_TC026_api_search_filters_by_genre(): void
     {
         $this->makeGame(['genres' => ['RPG']]);
@@ -69,6 +86,10 @@ class AdminFlowTest extends TestCase
         $this->assertEquals(1, $response->json('meta.results_count'));
     }
 
+    /**
+     * Verifica que el filtro por precio máximo excluye los juegos
+     * que superan ese precio.
+     */
     public function test_TC026_api_search_filters_by_price(): void
     {
         $this->makeGame(['title' => 'Cheap Game',     'price' => 5.00]);
@@ -83,6 +104,10 @@ class AdminFlowTest extends TestCase
 
     // ── TC-027: Documentación API ─────────────────────────────────────────────
 
+    /**
+     * Verifica que el endpoint de estadísticas responde correctamente
+     * y devuelve la estructura esperada.
+     */
     public function test_TC027_api_stats_endpoint_works(): void
     {
         $response = $this->getJson('/api/v1/stats');
@@ -95,6 +120,10 @@ class AdminFlowTest extends TestCase
                  ]);
     }
 
+    /**
+     * Verifica que el endpoint de géneros responde correctamente
+     * y devuelve la estructura esperada con el total de géneros.
+     */
     public function test_TC027_api_genres_endpoint_works(): void
     {
         $this->makeGame(['genres' => ['RPG', 'Action']]);
@@ -109,6 +138,10 @@ class AdminFlowTest extends TestCase
                  ]);
     }
 
+    /**
+     * Verifica que el endpoint de plataformas responde correctamente
+     * y devuelve la estructura esperada con el total de plataformas.
+     */
     public function test_TC027_api_platforms_endpoint_works(): void
     {
         $this->makeGame(['platforms' => ['Windows', 'PlayStation']]);
@@ -123,6 +156,10 @@ class AdminFlowTest extends TestCase
                  ]);
     }
 
+    /**
+     * Verifica que el endpoint de detalle por slug devuelve el juego correcto
+     * con su información de comunidad incluida.
+     */
     public function test_TC027_api_game_by_slug_works(): void
     {
         $game = $this->makeGame(['title' => 'Elden Ring']);
@@ -138,6 +175,10 @@ class AdminFlowTest extends TestCase
 
     // ── TC-028: Crear juego ───────────────────────────────────────────────────
 
+    /**
+     * Verifica que un administrador puede crear un juego correctamente
+     * y que este queda guardado en la base de datos.
+     */
     public function test_TC028_admin_can_create_game(): void
     {
         $admin = $this->makeAdmin();
@@ -159,6 +200,10 @@ class AdminFlowTest extends TestCase
         $this->assertDatabaseHas('games', ['title' => 'Nuevo Juego Test']);
     }
 
+    /**
+     * Verifica que un usuario normal no puede crear juegos
+     * y recibe un error 403 de acceso denegado.
+     */
     public function test_TC028_regular_user_cannot_create_game(): void
     {
         $user = User::factory()->create();
@@ -170,6 +215,10 @@ class AdminFlowTest extends TestCase
         $response->assertStatus(403);
     }
 
+    /**
+     * Verifica que la creación de un juego sin los campos obligatorios
+     * devuelve errores de validación 422 para cada campo requerido.
+     */
     public function test_TC028_create_game_requires_mandatory_fields(): void
     {
         $admin = $this->makeAdmin();
@@ -185,6 +234,10 @@ class AdminFlowTest extends TestCase
 
     // ── TC-029: Editar juego ──────────────────────────────────────────────────
 
+    /**
+     * Verifica que un administrador puede actualizar los campos de un juego
+     * y que los cambios quedan reflejados en la base de datos.
+     */
     public function test_TC029_admin_can_update_game(): void
     {
         $admin = $this->makeAdmin();
@@ -202,6 +255,10 @@ class AdminFlowTest extends TestCase
         ]);
     }
 
+    /**
+     * Verifica que un usuario normal no puede editar juegos
+     * y recibe un error 403 de acceso denegado.
+     */
     public function test_TC029_regular_user_cannot_update_game(): void
     {
         $user = User::factory()->create();
@@ -216,6 +273,10 @@ class AdminFlowTest extends TestCase
 
     // ── TC-030: Eliminar juego ────────────────────────────────────────────────
 
+    /**
+     * Verifica que un administrador puede eliminar un juego
+     * y que este desaparece de la base de datos.
+     */
     public function test_TC030_admin_can_delete_game(): void
     {
         $admin = $this->makeAdmin();
@@ -227,6 +288,10 @@ class AdminFlowTest extends TestCase
         $this->assertDatabaseMissing('games', ['id' => $game->id]);
     }
 
+    /**
+     * Verifica que un usuario normal no puede eliminar juegos
+     * y recibe un error 403 de acceso denegado.
+     */
     public function test_TC030_regular_user_cannot_delete_game(): void
     {
         $user = User::factory()->create();
@@ -239,6 +304,10 @@ class AdminFlowTest extends TestCase
 
     // ── TC-031: Eliminar usuario ──────────────────────────────────────────────
 
+    /**
+     * Verifica que un administrador puede eliminar un usuario normal
+     * y que este desaparece de la base de datos.
+     */
     public function test_TC031_admin_can_delete_regular_user(): void
     {
         $admin  = $this->makeAdmin();
@@ -250,6 +319,10 @@ class AdminFlowTest extends TestCase
         $this->assertDatabaseMissing('users', ['id' => $target->id]);
     }
 
+    /**
+     * Verifica que un administrador no puede eliminarse a sí mismo
+     * y recibe el mensaje de error correspondiente.
+     */
     public function test_TC031_admin_cannot_delete_themselves(): void
     {
         $admin = $this->makeAdmin();
@@ -260,6 +333,10 @@ class AdminFlowTest extends TestCase
                  ->assertJson(['message' => 'No puedes eliminar tu propia cuenta.']);
     }
 
+    /**
+     * Verifica que un administrador no puede eliminar a otro administrador
+     * y recibe el mensaje de error correspondiente.
+     */
     public function test_TC031_admin_cannot_delete_another_admin(): void
     {
         $admin1 = $this->makeAdmin();
@@ -271,6 +348,10 @@ class AdminFlowTest extends TestCase
                  ->assertJson(['message' => 'No puedes eliminar a otro administrador.']);
     }
 
+    /**
+     * Verifica que un usuario normal no puede eliminar otros usuarios
+     * y recibe un error 403 de acceso denegado.
+     */
     public function test_TC031_regular_user_cannot_delete_users(): void
     {
         $user   = User::factory()->create();

@@ -1,3 +1,4 @@
+<!--Gestiona la apariencia y comportamiento de todos los botones de la aplicación-->
 <template>
   <button
     v-bind="$attrs"
@@ -11,8 +12,8 @@
 
 <script setup>
 const props = defineProps({
-  variant: { type: String, default: 'primary' },  // primary | secondary | danger | ghost
-  size:    { type: String, default: 'md' },        // sm | md | lg
+  variant: { type: String, default: 'primary' },
+  size:    { type: String, default: 'md' },
   loading: { type: Boolean, default: false },
   disabled:{ type: Boolean, default: false },
 })

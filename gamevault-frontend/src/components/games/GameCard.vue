@@ -1,3 +1,4 @@
+<!--Gestiona la tarjeta visual de un juego-->
 <template>
   <RouterLink :to="{ name: 'game-detail', params: { id: game.id } }"
     class="group bg-gray-900 rounded-lg overflow-hidden border border-gray-800 hover:border-blue-700 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col">

@@ -56,12 +56,6 @@ El servidor quedará disponible en `http://localhost:8000`.
 | `SANCTUM_STATEFUL_DOMAINS` | Dominio del frontend (localhost:5173) |
 | `FRONTEND_URL` | URL completa del frontend |
 
-## Usuarios de prueba (seeder)
-
-| Rol | Email | Contraseña |
-|---|---|---|
-| Admin | admin@steam.test | password |
-
 
 ## Recursos implementados
 
@@ -98,5 +92,3 @@ El servidor quedará disponible en `http://localhost:8000`.
 ```bash
 php artisan test --testdox
 ```
-
-Los tests usan SQLite en memoria. Cubren: autenticación, CRUD de juegos, biblioteca y wishlist.
