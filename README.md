@@ -26,8 +26,8 @@ GameVault permite a los usuarios explorar un catálogo de videojuegos, gestionar
 ## Instalación rápida
 
 Ver los README de cada carpeta:
-- [Backend/README.md](./Backend/README.md)
-- [Frontend/README.md](./Frontend/README.md)
+- [Backend/README.md](./gamevault-backend/README.md)
+- [Frontend/README.md](./gamevault-frontend/README.md)
 
 ## Funcionalidades destacadas
 
